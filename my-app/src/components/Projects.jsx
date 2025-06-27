@@ -5,6 +5,18 @@ const Projects = () => {
   // Array of project data
   const projects = [
     {
+      title: "MLB Pitcher Durability Analysis",
+      description: "An insight into MLB and pitching",
+      image: "https://via.placeholder.com/400", // Replace with actual project image
+      link: "https://example.com/ai-chatbot" // Replace with actual project link
+    },
+    {
+      title: "Generative Marketing Data",
+      description: "Create artificial data using SMOTE",
+      image: "https://via.placeholder.com/400", // Replace with actual project image
+      link: "https://example.com/ai-chatbot" // Replace with actual project link
+    },
+    {
       title: "AI Chatbot",
       description: "An interactive chatbot powered by NLP and AI models.",
       image: "https://via.placeholder.com/400", // Replace with actual project image
@@ -25,7 +37,7 @@ const Projects = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-16 px-6">
+    <div className="min-h-screen bg-gray-900 text-white mt-[80px] py-16 px-6">
       <h1 className="text-4xl font-bold text-center mb-8">My Projects</h1>
       <div className="flex flex-wrap justify-center gap-8">
         {projects.map((project, index) => (
