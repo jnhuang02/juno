@@ -1,0 +1,11 @@
+<script>
+    // Redirect to the root (or your base) and let your SPA router handle routing
+    var pathname = window.location.pathname;
+    var base = '/'; // your base path
+    if (!pathname.startsWith(base)) {
+      window.location.href = base;
+    } else {
+      window.location.href = base + '#!' + pathname.substring(base.length);
+    }
+  </script>
+  
