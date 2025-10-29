@@ -17,7 +17,7 @@ const Projects = () => {
       link: "https://example.com/ai-chatbot" // Replace with actual project link
     },
     {
-      title: "AI Chatbot",
+      title: "Recommendation System dataset",
       description: "An interactive chatbot powered by NLP and AI models.",
       image: "https://via.placeholder.com/400", // Replace with actual project image
       link: "https://example.com/ai-chatbot" // Replace with actual project link
@@ -29,7 +29,7 @@ const Projects = () => {
       link: "https://example.com/portfolio"
     },
     {
-      title: "Data Visualization Dashboard",
+      title: "Huffman Visulization",
       description: "A web-based dashboard for interactive data visualization.",
       image: "https://via.placeholder.com/400",
       link: "https://example.com/data-dashboard"

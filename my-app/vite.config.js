@@ -8,11 +8,12 @@
 //   plugins: [react(), tailwindcss()],
 // })
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
-// Use a relative base so assets load correctly on GitHub Pages (repo pages)
+// base set to '/' for root deployment; change to '/REPO_NAME/' or './' if needed for gh-pages
 export default defineConfig({
-  base: './',
-  plugins: [react()],
-});
+  base: '/',  // Use root base path when deploying to root URL
+  plugins: [react(), tailwindcss()],
+})

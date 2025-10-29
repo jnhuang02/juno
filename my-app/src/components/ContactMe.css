@@ -1,0 +1,21 @@
+.contact-container {
+  /* make it a flex container and center both axes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  /* give the container a defined height so vertical centering works */
+  min-height: 80vh; /* 80% of the viewport height */
+
+  /* ensure it fills horizontal space */
+  width: 100%;
+}
+
+/* Center text inside the headings */
+/* .contact-container h2, */
+/* .contact-container h1,
+.contact-container p {
+  text-align: center;
+  margin: 0.5rem 0;
+} */
