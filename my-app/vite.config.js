@@ -14,6 +14,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // base set to '/' for root deployment; change to '/REPO_NAME/' or './' if needed for gh-pages
 export default defineConfig({
-  base: '/',  // Use root base path when deploying to root URL
+  base: '/juno/',  // Use repository name for GitHub Pages subdirectory
   plugins: [react(), tailwindcss()],
 })
