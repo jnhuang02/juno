@@ -17,7 +17,7 @@ const Projects = () => {
       link: "https://example.com/ai-chatbot" // Replace with actual project link
     },
     {
-      title: "Recommendation System dataset",
+      title: "Recommendation Amazon books",
       description: "An interactive chatbot powered by NLP and AI models.",
       image: "https://via.placeholder.com/400", // Replace with actual project image
       link: "https://example.com/ai-chatbot" // Replace with actual project link

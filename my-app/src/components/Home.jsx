@@ -3,6 +3,7 @@ import RocketGame from "./RocketGame";
 import Widget from "./Widget";
 import { TypeAnimation } from "react-type-animation"; // ✅ Import TypeAnimation
 import pfp from "../imgs/pfp.png";
+import resumePdf from "../assets/huang_resume.pdf"; // Import the resume file
 
 const Home = () => {
   return (
@@ -39,12 +40,16 @@ const Home = () => {
             Always learning and improving.
           </p>
           <div className="mt-6 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
-            <button className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md">
-              Hire Me
-            </button>
-            <button className="px-6 py-3 border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg shadow-md">
-              Download CV
-            </button>
+            <a href="mailto:huangjustinn@gmail.com">
+              <button className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md">
+                Hire Me
+              </button>
+            </a>
+            <a href={resumePdf} download="huang_resume.pdf">
+              <button className="px-6 py-3 border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg shadow-md">
+                Download CV
+              </button>
+            </a>
           </div>
         </div>
 

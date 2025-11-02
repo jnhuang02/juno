@@ -13,7 +13,7 @@ function NavBar() {
           {["Home", "Projects", "AboutMe"].map((item, index) => (
             <li key={index} className="relative group">
               <NavLink
-                to={`/${item === "Home" ? "" : item}`}
+                to={item === "Home" ? "/juno/" : `/${item}`}
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-xl transition duration-300 ${
                     isActive
