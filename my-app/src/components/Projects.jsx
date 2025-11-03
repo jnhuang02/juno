@@ -14,7 +14,7 @@ const Projects = () => {
       title: "Generative Marketing Data",
       description: "Create artificial data using SMOTE",
       image: "https://via.placeholder.com/400", // Replace with actual project image
-      link: "https://example.com/ai-chatbot" // Replace with actual project link
+      link: "https://github.com/dan-knight/DIGIX-GlobalAIChallenge" // Replace with actual project link
     },
     {
       title: "Recommendation Amazon books",
@@ -26,13 +26,13 @@ const Projects = () => {
       title: "Portfolio Website",
       description: "A sleek personal portfolio built with React and Tailwind CSS.",
       image: "https://via.placeholder.com/400",
-      link: "https://example.com/portfolio"
+      link: "https://github.com/jnhuang02/juno"
     },
     {
       title: "Huffman Visulization",
       description: "A web-based dashboard for interactive data visualization.",
       image: "https://via.placeholder.com/400",
-      link: "https://example.com/data-dashboard"
+      link: "https://github.com/saathvikpd/HuffmanViz"
     }
   ];
 

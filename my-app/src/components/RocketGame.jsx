@@ -122,7 +122,7 @@ const RocketGame = () => {
 
   return (
     <div className="relative flex flex-col items-center justify-center text-white">
-      <h1 className="text-2xl font-bold mb-4">🚀 Rocket Game - Avoid Asteroids!</h1>
+      <h1 className="text-2xl font-bold mb-4">Avoid Asteroids!</h1>
       <p>Use <strong>Arrow Keys</strong> to move left & right</p>
 
       {/* Canvas Container */}

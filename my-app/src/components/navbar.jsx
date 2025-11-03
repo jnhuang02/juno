@@ -14,6 +14,7 @@ function NavBar() {
             <li key={index} className="relative group">
               <NavLink
                 to={item === "Home" ? "/juno/" : `/juno/${item}`}
+                end={item === "Home"}
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-xl transition duration-300 ${
                     isActive
