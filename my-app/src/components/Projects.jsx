@@ -7,20 +7,20 @@ const Projects = () => {
     {
       title: "MLB Pitcher Durability Analysis",
       description: "An insight into MLB and pitching",
-      image: "https://via.placeholder.com/400", // Replace with actual project image
-      link: "https://example.com/ai-chatbot" // Replace with actual project link
+      image: "https://via.placeholder.com/400", 
+      link: "https://example.com/ai-chatbot" 
     },
     {
       title: "Generative Marketing Data",
       description: "Create artificial data using SMOTE",
-      image: "https://via.placeholder.com/400", // Replace with actual project image
-      link: "https://github.com/dan-knight/DIGIX-GlobalAIChallenge" // Replace with actual project link
+      image: "https://via.placeholder.com/400", 
+      link: "https://github.com/dan-knight/DIGIX-GlobalAIChallenge"
     },
     {
       title: "Recommendation Amazon books",
       description: "An interactive chatbot powered by NLP and AI models.",
-      image: "https://via.placeholder.com/400", // Replace with actual project image
-      link: "https://example.com/ai-chatbot" // Replace with actual project link
+      image: "https://via.placeholder.com/400", 
+      link: "https://example.com/ai-chatbot" 
     },
     {
       title: "Portfolio Website",
@@ -31,7 +31,7 @@ const Projects = () => {
     {
       title: "Huffman Visulization",
       description: "A web-based dashboard for interactive data visualization.",
-      image: "https://via.placeholder.com/400",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Huffman_tree_2.svg/1200px-Huffman_tree_2.svg.png",
       link: "https://github.com/saathvikpd/HuffmanViz"
     }
   ];
