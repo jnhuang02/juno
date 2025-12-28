@@ -23,7 +23,7 @@ function App() {
         <Route path="/AboutMe" element={<AboutMe />} />
         <Route path="/Projects" element={<Projects />} />
         <Route path="/ContactMe" element={<ContactMe />} />
-        <Route component={NotFound} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
 

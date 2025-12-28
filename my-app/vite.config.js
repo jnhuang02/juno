@@ -12,8 +12,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// base set to '/' for root deployment; change to '/REPO_NAME/' or './' if needed for gh-pages
+// Project page at https://jnhuang02.github.io/juno/ → base must be '/juno/'
+// For custom 404 on GitHub Pages with BrowserRouter:
+// 1) npm run build
+// 2) cp dist/index.html dist/404.html
+// 3) npm run deploy
 export default defineConfig({
-  base: '/juno/',  // Use repository name for GitHub Pages subdirectory
+  base: '/juno/',
   plugins: [react(), tailwindcss()],
 })
