@@ -13,7 +13,7 @@ function NavBar() {
           {["Home", "Projects", "AboutMe"].map((item, index) => (
             <li key={index} className="relative group">
               <NavLink
-                to={item === "Home" ? "/juno/" : `/juno/${item}`}
+                to={item === "Home" ? "/" : `${item}`}
                 end={item === "Home"}
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-xl transition duration-300 ${
@@ -37,7 +37,7 @@ function NavBar() {
 
         {/* Contact Button */}
         <NavLink
-          to="/juno/ContactMe"
+          to="/ContactMe"
           className={({ isActive }) =>
             isActive
               ? "bg-red-600 text-white text-xl px-5 py-2 rounded-full shadow-md font-extrabold scale-105 transition duration-300"

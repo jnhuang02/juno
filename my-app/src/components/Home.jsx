@@ -60,7 +60,7 @@ const Home = () => {
       </div>
 
       {/* Footer / Branding */}
-      <div className="mt-16 flex justify-center space-x-6">
+      {/* <div className="mt-16 flex justify-center space-x-6">
         <Widget
           videoSrc="https://www.w3schools.com/html/movie.mp4"
           thumbnail={pfp}
@@ -68,7 +68,7 @@ const Home = () => {
         />
         <img src="https://via.placeholder.com/100" alt="Brand2" className="w-16 opacity-50" />
         <img src="https://via.placeholder.com/100" alt="Brand3" className="w-16 opacity-50" />
-      </div>
+      </div> */}
     </div>
   );
 };
