@@ -7,25 +7,25 @@ const Projects = () => {
     {
       title: "MLB Pitcher Durability Analysis",
       description: "An insight into MLB and pitching",
-      image: "https://via.placeholder.com/400", 
+      image: "https://images.seattletimes.com/wp-content/uploads/2023/06/06032023_ms_144222.jpg?d=2040x1360", 
       link: "https://example.com/ai-chatbot" 
     },
     {
-      title: "Generative Marketing Data",
-      description: "Create artificial data using SMOTE",
-      image: "https://via.placeholder.com/400", 
+      title: "Generative Marketing Data (SMOTE)",
+      description: "Created artificial data using SMOTE for a marketing dataset.",
+      image: "https://plus.unsplash.com/premium_photo-1661878265739-da90bc1af051?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGF0YXxlbnwwfHwwfHx8MA%3D%3D", 
       link: "https://github.com/dan-knight/DIGIX-GlobalAIChallenge"
     },
     {
-      title: "Recommendation Amazon books",
-      description: "An interactive chatbot powered by NLP and AI models.",
-      image: "https://via.placeholder.com/400", 
-      link: "https://example.com/ai-chatbot" 
+      title: "Text mining Amazon book reviews",
+      description: "Text mining and sentiment analysis on Amazon book reviews.",
+      image: "https://www.promptcloud.com/wp-content/uploads/2018/08/text-analytics-mining-data-1.png", 
+      link: "https://docs.google.com/presentation/d/15sFH_3zUSQgiE1KM00Ll-Tocv3jPETBmGoQrg-57gv0/edit?slide=id.p#slide=id.phttps://www.promptcloud.com/wp-content/uploads/2018/08/text-analytics-mining-data-1.png" 
     },
     {
       title: "Portfolio Website",
       description: "A sleek personal portfolio built with React and Tailwind CSS.",
-      image: "https://via.placeholder.com/400",
+      image: "https://img.pikbest.com/wp/202347/architecture-portfolio-blue-luxury-background-with-abstract-wall-wave-3d-rendered-and-perfect-for-website-presentation-or-use_9759684.jpg!w700wp",
       link: "https://github.com/jnhuang02/juno"
     },
     {

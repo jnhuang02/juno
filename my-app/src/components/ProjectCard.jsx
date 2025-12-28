@@ -21,10 +21,13 @@ const ProjectCard = ({ title, description, image, link }) => {
           className="absolute w-full h-full rounded-lg shadow-lg bg-cover bg-center flex items-center justify-center text-white text-2xl font-bold p-4"
           style={{
             backgroundImage: `url(${image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             backfaceVisibility: "hidden", // Hides the back side when front is visible
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
+          {/* semi‑transparent overlay so background image remains visible */}
+          <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
           <span className="relative z-10">{title}</span>
         </div>
 
