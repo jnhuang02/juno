@@ -26,20 +26,20 @@ const ProjectCard = ({ title, description, image, link }) => {
             backfaceVisibility: "hidden", // Hides the back side when front is visible
           }}
         >
-          {/* semi‑transparent overlay so background image remains visible */}
-          <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
-          <span className="relative z-10">{title}</span>
+          {/* darker overlay → higher opacity */}
+          <div className="absolute inset-0 bg-black/75 rounded-lg"></div>
+          <span className="relative z-10 text-center">{title}</span>
         </div>
 
         {/* Back Side (Fixing Mirrored Text) */}
         <div
-          className="absolute w-full h-full rounded-lg shadow-lg bg-gray-800 text-white p-4 flex flex-col justify-between transform rotate-y-180"
+          className="items-center gap-4 justify-center absolute w-full h-full rounded-lg shadow-lg bg-gray-800 text-white p-4 flex flex-col justify-between transform rotate-y-180"
           style={{
             backfaceVisibility: "hidden", // Hides the front side when back is visible
             transform: "rotateY(180deg)", // Fixes mirrored text issue
           }}
         >
-          <p className="text-lg">{description}</p>
+          <p className="text-center text-lg">{description}</p>
           <a
             href={link}
             target="_blank"

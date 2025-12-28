@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function NavBar() {
   return (
-    <nav className="absolute top-3 left-0 w-full font-primary text-lg pt-4 bg-transparent text-white">
+    <nav className="absolute top-3 left-0 w-full font-primary text-lg pt-4 bg-gray-900/80 backdrop-blur-sm text-white">
       <div className="container mx-auto flex justify-between items-center px-6">
         {/* Logo Section */}
         <div className="text-2xl font-extrabold text-red-600">JH</div>
