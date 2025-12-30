@@ -5,10 +5,16 @@ const Projects = () => {
   // Array of project data
   const projects = [
     {
+      title: "Superhero Dashboard",
+      description: "A website showcasing my favorite superheros",
+      image: "https://images.seattletimes.com/wp-content/uploads/2023/06/06032023_ms_144222.jpg?d=2040x1360", 
+      link: "https://docs.google.com/presentation/d/1Xe51s4QxqVMGzgYuGSfdgykBxlORkp2KGfvEHUeFXVM/edit?slide=id.p#slide=id.p" 
+    },
+    {
       title: "MLB Pitcher Durability Analysis",
       description: "An insight into MLB and pitching",
       image: "https://images.seattletimes.com/wp-content/uploads/2023/06/06032023_ms_144222.jpg?d=2040x1360", 
-      link: "https://example.com/ai-chatbot" 
+      link: "https://docs.google.com/presentation/d/1Xe51s4QxqVMGzgYuGSfdgykBxlORkp2KGfvEHUeFXVM/edit?slide=id.p#slide=id.p" 
     },
     {
       title: "Generative Marketing Data (SMOTE)",
