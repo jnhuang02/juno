@@ -7,8 +7,8 @@ const Projects = () => {
     {
       title: "Superhero Dashboard",
       description: "A website showcasing my favorite superheros",
-      image: "https://images.seattletimes.com/wp-content/uploads/2023/06/06032023_ms_144222.jpg?d=2040x1360", 
-      link: "https://docs.google.com/presentation/d/1Xe51s4QxqVMGzgYuGSfdgykBxlORkp2KGfvEHUeFXVM/edit?slide=id.p#slide=id.p" 
+      image: "https://preview.redd.it/redownloaded-reddit-just-to-say-that-no-character-in-v0-f2ufmu6atvl91.jpg?width=640&crop=smart&auto=webp&s=6eb7e2d0938601816528b411599dbde0f4fad8ee", 
+      link: "https://jnhuang02.github.io/superhero-hub/" 
     },
     {
       title: "MLB Pitcher Durability Analysis",
