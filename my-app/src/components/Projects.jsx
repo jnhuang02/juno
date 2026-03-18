@@ -20,7 +20,7 @@ const Projects = () => {
       title: "Generative Marketing Data (SMOTE)",
       description: "Created artificial data using SMOTE for a marketing dataset.",
       image: "https://plus.unsplash.com/premium_photo-1661878265739-da90bc1af051?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGF0YXxlbnwwfHwwfHx8MA%3D%3D", 
-      link: "https://github.com/dan-knight/DIGIX-GlobalAIChallenge"
+      link: "https://drive.google.com/file/d/1-QCTsPo-FBfUOFjdJ5ap_irVOTK8pWQm/view?usp=sharing"
     },
     {
       title: "Text mining Amazon book reviews",
