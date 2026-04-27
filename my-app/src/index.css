@@ -1,44 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background: linear-gradient(to bottom, #111827, #000000);
-  background-attachment: fixed;
-
+  background: #080c18;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; /* For Safari/older browsers */
+html {
+  scroll-behavior: smooth;
 }
 
+body {
+  background: #080c18;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 button {
   cursor: pointer;
 }
 
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #000000;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
- 
+/* Perspective utility for 3D card flip */
+.perspective {
+  perspective: 1000px;
 }
