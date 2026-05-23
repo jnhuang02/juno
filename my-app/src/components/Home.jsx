@@ -79,7 +79,7 @@ const Home = () => {
                 "Student", 1400,
                 "Musician", 1400,
                 "Data Scientist", 1400,
-                "Gamer", 1400,
+                "Analyst", 1400,
               ]}
               wrapper="span"
               speed={55}
