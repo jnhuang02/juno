@@ -21,6 +21,7 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
           className="absolute inset-0 rounded-2xl overflow-hidden flex items-end"
           style={{
             backfaceVisibility: "hidden",
+            pointerEvents: isFlipped ? "none" : "auto",
             backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -77,16 +78,13 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
+            className="mt-4 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-200 hover:scale-105 inline-block"
+            style={{
+              background: "linear-gradient(135deg, #3b82f6, #6366f1)",
+              boxShadow: "0 4px 20px rgba(99,102,241,0.4)",
+            }}
           >
-            <button
-              className="mt-4 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-200 hover:scale-105"
-              style={{
-                background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-                boxShadow: "0 4px 20px rgba(99,102,241,0.4)",
-              }}
-            >
-              View Project
-            </button>
+            View Project
           </a>
         </div>
       </div>

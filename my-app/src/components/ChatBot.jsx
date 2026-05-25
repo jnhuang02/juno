@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 const MAX_INPUT_LENGTH = 400;
 const MAX_SESSION_MESSAGES = 20;
@@ -79,23 +78,20 @@ const ChatBot = () => {
           content: m.text,
         }));
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            ...recentHistory,
-            { role: "user", content: userText },
-          ],
-          max_tokens: MAX_RESPONSE_TOKENS,
-          stream: true,
-        }),
-      });
+      const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        stream: true,
+        max_tokens: MAX_RESPONSE_TOKENS,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...recentHistory,
+          { role: "user", content: userText },
+        ],
+      }),
+    });
 
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
