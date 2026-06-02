@@ -93,10 +93,8 @@ const Home = () => {
           </h2>
 
           <p className="mt-6 text-base md:text-lg text-gray-400 leading-relaxed max-w-md mx-auto lg:mx-0">
-            Passionate about building scalable, user-friendly applications at the
-            intersection of data science and software engineering.
+            Passionate about leveraging technology to solve real-world problems. 
           </p>
-
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <a href="mailto:huangjustinn@gmail.com">
               <button

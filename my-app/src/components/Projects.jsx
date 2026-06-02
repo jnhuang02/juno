@@ -1,5 +1,6 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
+import FadeIn from "./FadeIn";
 
 const projects = [
   {
@@ -44,7 +45,7 @@ const projects = [
     title: "Huffman Visualization",
     description: "Interactive web-based visualization of Huffman encoding tree construction.",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Huffman_tree_2.svg/1200px-Huffman_tree_2.svg.png",
-    link: "https://github.com/saathvikpd/HuffmanViz",
+    link: "https://saathvikpd.github.io/HuffmanViz/",
     tags: ["Algorithms", "JavaScript"],
   },
 ];
@@ -54,6 +55,7 @@ const Projects = () => {
     <div className="w-full py-28 px-6" style={{ background: "#080c18" }}>
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
+        <FadeIn>
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <span
@@ -80,11 +82,12 @@ const Projects = () => {
             machine learning, and data science.
           </p>
         </div>
+        </FadeIn>
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
           {projects.map((project, index) => (
-            <div key={index} className="w-full max-w-sm">
+            <FadeIn key={index} delay={index * 80} className="w-full max-w-sm">
               <ProjectCard
                 title={project.title}
                 description={project.description}
@@ -92,7 +95,7 @@ const Projects = () => {
                 link={project.link}
                 tags={project.tags}
               />
-            </div>
+            </FadeIn>
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { TypeAnimation } from "react-type-animation";
 import pfp from "../imgs/pfp.png";
+import FadeIn from "./FadeIn";
 
 const skills = [
   {
@@ -11,27 +12,27 @@ const skills = [
   {
     category: "Frameworks & Libraries",
     icon: "🧩",
-    items: ["React", "Node.js", "TensorFlow", "PyTorch", "Tailwind CSS", "scikit-learn"],
+    items: ["React", "Node.js", "TensorFlow", "PyTorch", "Tailwind CSS", "scikit-learn", "Apache Spark"],
   },
   {
     category: "Tools & Platforms",
     icon: "🛠️",
-    items: ["Git", "Docker", "Pandas", "NumPy", "Jupyter", "PostgreSQL"],
+    items: ["Git", "Docker", "Pandas", "NumPy", "Jupyter", "PostgreSQL", "Kubernetes", "AWS", "GCP"],
   },
 ];
 
 const timeline = [
   {
-    year: "2025–Present",
+    year: "2024–Present",
     title: "MS Applied Statistics & Data Science",
     org: "UCLA",
-    detail: "Working with LLMs — BERT, CNNs, RNNs",
+    detail: "Focus on AI/ML",
   },
   {
-    year: "2021–2025",
+    year: "2020–2024",
     title: "BS Math-Computer Science",
     org: "UC San Diego",
-    detail: "Minor in Data Science & Business-Economics",
+    detail: "minor in Data Science, minor Business-Economics",
   },
 
 ];
@@ -44,6 +45,7 @@ const AboutMe = () => {
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
+        <FadeIn>
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <span
@@ -66,9 +68,10 @@ const AboutMe = () => {
             style={{ background: "linear-gradient(90deg, #3b82f6, #6366f1)" }}
           />
         </div>
+        </FadeIn>
 
         {/* Profile card + bio */}
-        <div className="flex flex-col lg:flex-row gap-12 mb-20">
+        <FadeIn delay={100} className="flex flex-col lg:flex-row gap-12 mb-20">
           {/* Profile */}
           <div className="flex-shrink-0 flex flex-col items-center gap-6">
             <div className="relative">
@@ -105,9 +108,9 @@ const AboutMe = () => {
               <TypeAnimation
                 sequence={[
                   "Hello, my name is Justin.", 1400,
-                  "I'm an upcoming master's student at UCLA.", 1400,
-                  "I studied Math-CS at UCSD.", 1400,
-                  "I love front-end dev & machine learning.", 1400,
+                  "I'm a master's student at UCLA.", 1400,
+                  "I studied CS at UCSD.", 1400,
+                  "I enjoy full stack development and machine learning.", 1400,
                 ]}
                 wrapper="p"
                 speed={55}
@@ -120,25 +123,23 @@ const AboutMe = () => {
             <div className="space-y-4 text-gray-400 text-base leading-relaxed">
               <p>
                 I'm a graduate student at UCLA pursuing a Master's in Applied Statistics and
-                Data Science, currently working with Large Language Models including BERT, CNNs,
-                and RNNs.
+                Data Science, I did my undergrad at UCSD studying Computer Science, I am currently
+                working on my thesis on Large Language Models.
               </p>
               <p>
-                My undergraduate degree at UCSD in Math-Computer Science (with minors in Data
-                Science and Business-Economics) gave me a strong analytical foundation. Outside
-                academics, I stay active through weightlifting, running, swimming, and basketball
-                — and I'm expanding musically by learning DJ and guitar.
+                My work in past projects and internships have been in regards to building scalable workflows for automation to help with reducing the time
+                for manual work. Manual work has problems of being error-prone, fatigue, time consuming and inefficient, especially when done in largue quanities.
+                Use of new technology such as AI when done correctly can mitigate that and allow people to focus on more creative and high level work. 
               </p>
               <blockquote
                 className="text-gray-500 italic text-sm leading-relaxed pl-4"
                 style={{ borderLeft: "2px solid rgba(99,102,241,0.5)" }}
               >
-                I believe data is another way to tell stories. Deciphering meaning behind data
-                can greatly contribute to technological advancements and drive society forward.
+                I believe data is another way to tell stories. 
               </blockquote>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Timeline */}
         <div className="mb-20">
@@ -149,8 +150,8 @@ const AboutMe = () => {
               className="absolute left-[19px] top-4 bottom-4 w-px hidden md:block"
               style={{ background: "linear-gradient(to bottom, #3b82f6, #6366f1, transparent)" }}
             />
-            {timeline.map(({ year, title, org, detail }) => (
-              <div key={title} className="flex gap-6 items-start">
+            {timeline.map(({ year, title, org, detail }, i) => (
+              <FadeIn key={title} delay={i * 100} className="flex gap-6 items-start">
                 <div
                   className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{
@@ -184,7 +185,7 @@ const AboutMe = () => {
                   <p className="text-blue-400 text-sm font-medium mb-1">{org}</p>
                   <p className="text-gray-500 text-sm">{detail}</p>
                 </div>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -193,9 +194,9 @@ const AboutMe = () => {
         <div>
           <h3 className="text-2xl font-bold text-white mb-8 text-center">Technical Skills</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {skills.map(({ category, icon, items }) => (
+            {skills.map(({ category, icon, items }, i) => (
+              <FadeIn key={category} delay={i * 100}>
               <div
-                key={category}
                 className="rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]"
                 style={{
                   background: "rgba(255,255,255,0.03)",
@@ -227,6 +228,7 @@ const AboutMe = () => {
                   ))}
                 </div>
               </div>
+              </FadeIn>
             ))}
           </div>
         </div>

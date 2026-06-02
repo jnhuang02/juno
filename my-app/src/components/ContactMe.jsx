@@ -1,4 +1,5 @@
 import React from "react";
+import FadeIn from "./FadeIn";
 
 const contacts = [
   {
@@ -42,6 +43,7 @@ const ContactMe = () => {
     <div className="w-full py-28 px-6" style={{ background: "#0e1525" }}>
       <div className="max-w-4xl mx-auto text-center">
         {/* Header */}
+        <FadeIn>
         <div className="mb-16">
           <div className="inline-flex items-center gap-2 mb-4">
             <span
@@ -68,12 +70,13 @@ const ContactMe = () => {
             Feel free to reach out through any of the channels below.
           </p>
         </div>
+        </FadeIn>
 
         {/* Contact cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {contacts.map(({ label, value, href, icon }) => (
+          {contacts.map(({ label, value, href, icon }, i) => (
+            <FadeIn key={label} delay={i * 100}>
             <a
-              key={label}
               href={href}
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
@@ -99,10 +102,12 @@ const ContactMe = () => {
                 <p className="text-blue-400 text-sm">{value}</p>
               </div>
             </a>
+            </FadeIn>
           ))}
         </div>
 
         {/* CTA */}
+        <FadeIn delay={200}>
         <a href="mailto:huangjustinn@gmail.com">
           <button
             className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105"
@@ -117,6 +122,7 @@ const ContactMe = () => {
             </svg>
           </button>
         </a>
+        </FadeIn>
 
         {/* Footer */}
         <p className="mt-16 text-gray-600 text-sm">

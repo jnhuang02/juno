@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isArticlePage = location.pathname.startsWith("/article");
 
   useEffect(() => {
+    if (isArticlePage) {
+      setScrolled(true);
+      setActive("writing");
+      return;
+    }
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
 
-      // Highlight the active section based on scroll position
-      const sections = ["home", "about", "projects", "contact"];
+      const sections = ["home", "about", "projects", "writing", "contact"];
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
         if (el && window.scrollY >= el.offsetTop - 120) {
@@ -21,17 +29,23 @@ function NavBar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isArticlePage]);
 
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+    if (isArticlePage) {
+      sessionStorage.setItem("scrollTarget", id);
+      navigate("/");
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const navLinks = [
     { label: "Home", id: "home" },
     { label: "About", id: "about" },
     { label: "Projects", id: "projects" },
+    { label: "Writing", id: "writing" },
   ];
 
   return (

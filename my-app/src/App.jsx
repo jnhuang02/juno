@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Home from './components/Home';
 import AboutMe from './components/AboutMe';
 import Projects from './components/Projects';
+import FeaturedWriting from './components/FeaturedWriting';
 import ContactMe from './components/ContactMe';
 import ChatBot from "./components/ChatBot";
+import ArticlePage from './components/ArticlePage';
 
 // Cloud/wave divider — fill color must match the NEXT section's bg
 const CloudDivider = ({ fromColor, toColor, flip = false }) => (
@@ -39,34 +42,57 @@ const CloudDivider = ({ fromColor, toColor, flip = false }) => (
   </div>
 );
 
+function Portfolio() {
+  useEffect(() => {
+    const target = sessionStorage.getItem("scrollTarget");
+    if (target) {
+      sessionStorage.removeItem("scrollTarget");
+      setTimeout(() => {
+        document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+    }
+  }, []);
+
+  return (
+  <div style={{ background: '#080c18' }}>
+    <Navbar />
+    <ChatBot />
+
+    <section id="home">
+      <Home />
+    </section>
+
+    <CloudDivider fromColor="#080c18" toColor="#0e1525" />
+
+    <section id="about">
+      <AboutMe />
+    </section>
+
+    <CloudDivider fromColor="#0e1525" toColor="#080c18" flip={true} />
+
+    <section id="projects">
+      <Projects />
+    </section>
+
+    <section id="writing">
+      <FeaturedWriting />
+    </section>
+
+    <CloudDivider fromColor="#080c18" toColor="#0e1525" />
+
+    <section id="contact">
+      <ContactMe />
+    </section>
+  </div>
+  );
+}
+
 function App() {
   return (
-    <div style={{ background: '#080c18' }}>
-      <Navbar />
-      <ChatBot />
-
-      <section id="home">
-        <Home />
-      </section>
-
-      <CloudDivider fromColor="#080c18" toColor="#0e1525" />
-
-      <section id="about">
-        <AboutMe />
-      </section>
-
-      <CloudDivider fromColor="#0e1525" toColor="#080c18" flip={true} />
-
-      <section id="projects">
-        <Projects />
-      </section>
-
-      <CloudDivider fromColor="#080c18" toColor="#0e1525" />
-
-      <section id="contact">
-        <ContactMe />
-      </section>
-    </div>
+    <Routes>
+      <Route path="/" element={<Portfolio />} />
+      <Route path="/article/:slug" element={<ArticlePage />} />
+    </Routes>
   );
 }
 
