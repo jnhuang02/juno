@@ -36,7 +36,7 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
             }}
           />
           <div className="relative z-10 p-5 w-full">
-            <h3 className="text-lg font-bold text-white leading-tight">{title}</h3>
+            <h3 className="text-lg font-bold leading-tight" style={{ color: "#ffffff" }}>{title}</h3>
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {tags.map((tag) => (
@@ -54,7 +54,7 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
                 ))}
               </div>
             )}
-            <p className="text-gray-400 text-xs mt-2">Click to learn more →</p>
+            <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>Click to learn more →</p>
           </div>
         </div>
 
@@ -70,18 +70,19 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
           }}
         >
           <div className="text-center">
-            <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+            <h3 className="text-lg font-bold mb-3" style={{ color: "#ffffff" }}>{title}</h3>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{description}</p>
           </div>
           <a
             href={link}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="mt-4 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-200 hover:scale-105 inline-block"
+            className="mt-4 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 inline-block"
             style={{
               background: "linear-gradient(135deg, #3b82f6, #6366f1)",
               boxShadow: "0 4px 20px rgba(99,102,241,0.4)",
+              color: "#fff",
             }}
           >
             View Project

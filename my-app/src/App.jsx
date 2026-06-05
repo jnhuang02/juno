@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
 import Navbar from './components/navbar';
 import Home from './components/Home';
 import AboutMe from './components/AboutMe';
@@ -43,6 +44,10 @@ const CloudDivider = ({ fromColor, toColor, flip = false }) => (
 );
 
 function Portfolio() {
+  const { isDark } = useTheme();
+  const bg1 = isDark ? "#080c18" : "#f4f7ff";
+  const bg2 = isDark ? "#0e1525" : "#eaeeff";
+
   useEffect(() => {
     const target = sessionStorage.getItem("scrollTarget");
     if (target) {
@@ -54,7 +59,7 @@ function Portfolio() {
   }, []);
 
   return (
-  <div style={{ background: '#080c18' }}>
+  <div style={{ background: bg1, transition: "background 0.3s ease" }}>
     <Navbar />
     <ChatBot />
 
@@ -62,13 +67,13 @@ function Portfolio() {
       <Home />
     </section>
 
-    <CloudDivider fromColor="#080c18" toColor="#0e1525" />
+    <CloudDivider fromColor={bg1} toColor={bg2} />
 
     <section id="about">
       <AboutMe />
     </section>
 
-    <CloudDivider fromColor="#0e1525" toColor="#080c18" flip={true} />
+    <CloudDivider fromColor={bg2} toColor={bg1} flip={true} />
 
     <section id="projects">
       <Projects />
@@ -78,7 +83,7 @@ function Portfolio() {
       <FeaturedWriting />
     </section>
 
-    <CloudDivider fromColor="#080c18" toColor="#0e1525" />
+    <CloudDivider fromColor={bg1} toColor={bg2} />
 
     <section id="contact">
       <ContactMe />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import articles from "../data/articles";
 import NavBar from "./navbar";
+import { useTheme } from "../ThemeContext";
 
 /* ── Image block with hover caption ──────────────────────────────── */
 const ImageBlock = ({ src, alt, caption }) => {
@@ -50,11 +51,12 @@ const ImageBlock = ({ src, alt, caption }) => {
             />
           </svg>
           <p
-            className="text-white text-center leading-relaxed font-medium"
+            className="text-center leading-relaxed font-medium"
             style={{
               fontSize: "1.05rem",
               maxWidth: 520,
               textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+              color: "#ffffff",
             }}
           >
             {caption}
@@ -202,6 +204,7 @@ const Block = ({ block, index }) => {
 const ArticlePage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  useTheme(); // subscribes to theme for CSS var updates
   const article = articles.find((a) => a.slug === slug);
   const [readProgress, setReadProgress] = useState(0);
 
@@ -227,7 +230,7 @@ const ArticlePage = () => {
 
   if (!article) {
     return (
-      <div style={{ background: "#080c18", minHeight: "100vh" }}>
+      <div style={{ background: "var(--bg-primary)", minHeight: "100vh", transition: "background 0.3s ease" }}>
         <NavBar />
         <div className="flex flex-col items-center justify-center" style={{ minHeight: "80vh" }}>
           <p className="text-white text-2xl font-bold mb-4">Article not found</p>
@@ -242,7 +245,7 @@ const ArticlePage = () => {
   const related = articles.filter((a) => a.slug !== slug).slice(0, 2);
 
   return (
-    <div style={{ background: "#080c18", minHeight: "100vh" }}>
+    <div style={{ background: "var(--bg-primary)", minHeight: "100vh", transition: "background 0.3s ease" }}>
       <NavBar />
 
       {/* Reading progress bar */}
@@ -264,7 +267,7 @@ const ArticlePage = () => {
       <div
         className="w-full pt-36 pb-24 px-6 relative overflow-hidden"
         style={{
-          background: article.banner ? "transparent" : "linear-gradient(180deg, #0d1528 0%, #080c18 100%)",
+          background: article.banner ? "transparent" : "var(--bg-primary)",
           borderBottom: "1px solid rgba(99,102,241,0.1)",
         }}
       >
@@ -321,7 +324,10 @@ const ArticlePage = () => {
           {/* Back link */}
           <button
             onClick={goBack}
-            className="inline-flex items-center gap-1.5 text-gray-500 hover:text-gray-300 transition-colors text-sm font-medium mb-12 group"
+            className="inline-flex items-center gap-1.5 transition-colors text-sm font-medium mb-12 group"
+            style={{ color: "rgba(255,255,255,0.45)" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
           >
             <svg
               className="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -354,8 +360,8 @@ const ArticlePage = () => {
 
           {/* Title */}
           <h1
-            className="font-extrabold text-white leading-[1.15] tracking-tight mb-6"
-            style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)" }}
+            className="font-extrabold leading-[1.15] tracking-tight mb-6"
+            style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", color: "#ffffff" }}
           >
             {article.title}
           </h1>
@@ -368,9 +374,9 @@ const ArticlePage = () => {
 
           {/* Meta row */}
           <div className="flex items-center gap-3 text-sm">
-            <span className="text-gray-400">{article.date}</span>
-            <span className="w-1 h-1 rounded-full bg-gray-600" />
-            <span className="text-gray-400">{article.readTime}</span>
+            <span style={{ color: "rgba(255,255,255,0.6)" }}>{article.date}</span>
+            <span className="w-1 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.3)" }} />
+            <span style={{ color: "rgba(255,255,255,0.6)" }}>{article.readTime}</span>
             <span className="w-1 h-1 rounded-full bg-gray-600" />
             <span
               className="text-xs font-semibold px-2.5 py-0.5 rounded-full"

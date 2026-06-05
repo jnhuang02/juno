@@ -328,8 +328,9 @@ const ChatBot = () => {
       {/* ── FAB trigger ── */}
       <button
         onClick={() => setIsOpen((o) => !o)}
-        className="flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-2xl font-semibold text-sm text-white transition-all duration-200"
+        className="flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-2xl font-semibold text-sm transition-all duration-200"
         style={{
+          color: "#fff",
           background: isOpen
             ? "rgba(99,102,241,0.15)"
             : "linear-gradient(135deg, #3b82f6, #6366f1)",

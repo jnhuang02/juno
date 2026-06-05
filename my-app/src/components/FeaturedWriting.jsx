@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import FadeIn from "./FadeIn";
 import articles from "../data/articles";
+import { useTheme } from "../ThemeContext";
 
 const ArticleCard = ({ article }) => (
   <Link
     to={`/article/${article.slug}`}
     className="group block w-full rounded-2xl transition-all duration-300"
     style={{
-      background: "linear-gradient(135deg, #0e1525, #131d35)",
-      border: "1px solid rgba(99,102,241,0.15)",
-      boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
+      background: "var(--bg-card)",
+      border: "1px solid var(--border-subtle)",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
       textDecoration: "none",
     }}
     onMouseEnter={e => {
@@ -19,8 +20,8 @@ const ArticleCard = ({ article }) => (
       e.currentTarget.style.transform = "translateY(-2px)";
     }}
     onMouseLeave={e => {
-      e.currentTarget.style.border = "1px solid rgba(99,102,241,0.15)";
-      e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.3)";
+      e.currentTarget.style.border = "1px solid var(--border-subtle)";
+      e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.15)";
       e.currentTarget.style.transform = "translateY(0)";
     }}
   >
@@ -80,10 +81,11 @@ const ArticleCard = ({ article }) => (
 
 const FeaturedWriting = () => {
   const [expanded, setExpanded] = useState(false);
+  useTheme(); // subscribes to theme
   const visible = expanded ? articles : articles.slice(0, 3);
 
   return (
-    <div className="w-full py-28 px-6" style={{ background: "#080c18" }}>
+    <div className="w-full py-28 px-6" style={{ background: "var(--bg-primary)", transition: "background 0.3s ease" }}>
       <div className="max-w-4xl mx-auto">
         {/* Section header */}
         <FadeIn>
@@ -130,7 +132,8 @@ const FeaturedWriting = () => {
           <div className="flex justify-center mt-10">
             <button
               onClick={() => setExpanded(!expanded)}
-              className="px-8 py-3 rounded-full text-sm font-semibold text-white transition-all duration-200 hover:scale-105"
+              className="px-8 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105"
+              style={{ color: "#fff" }}
               style={{
                 background: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.15))",
                 border: "1px solid rgba(99,102,241,0.35)",

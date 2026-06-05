@@ -23,14 +23,6 @@ const articles = [
     content: [
     {
       type: "p",
-      text: "The teenager walking to school wishes he had a bike. The guy on the bike wishes he had a car. The guy in the car wishes he had a sports car. The 40 year old millionaire in the sports car looks at the teenager and says \"I wish I could be young again.\"",
-    },
-    {
-      type: "p",
-      text: "Nobody ever arrives.",
-    },
-    {
-      type: "p",
       text: "I was a big sneakerhead in high school. Every few months a new Jordan colorway would drop and I would convince myself that this pair would finally feel like enough. It never did. The box would open, the shoes would hit the shelf, and within a week I was already looking at the next release. I knew it was happening. I just did not know how to stop it.",
     },
     {

@@ -1,5 +1,6 @@
 import React from "react";
 import FadeIn from "./FadeIn";
+import { useTheme } from "../ThemeContext";
 
 const contacts = [
   {
@@ -39,8 +40,9 @@ const contacts = [
 ];
 
 const ContactMe = () => {
+  useTheme(); // subscribes to theme
   return (
-    <div className="w-full py-28 px-6" style={{ background: "#0e1525" }}>
+    <div className="w-full py-28 px-6" style={{ background: "var(--bg-secondary)", transition: "background 0.3s ease" }}>
       <div className="max-w-4xl mx-auto text-center">
         {/* Header */}
         <FadeIn>
@@ -82,8 +84,8 @@ const ContactMe = () => {
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               className="group rounded-2xl p-6 flex flex-col items-center gap-4 transition-all duration-300 hover:scale-105"
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
                 textDecoration: "none",
               }}
             >
@@ -110,7 +112,8 @@ const ContactMe = () => {
         <FadeIn delay={200}>
         <a href="mailto:huangjustinn@gmail.com">
           <button
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105"
+            style={{ color: "#fff" }}
             style={{
               background: "linear-gradient(135deg, #3b82f6, #6366f1)",
               boxShadow: "0 8px 32px rgba(99,102,241,0.35)",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import shedeurImg from "../assets/shedeur.jpeg";
+import { useTheme } from "../ThemeContext";
 
 const KEYFRAMES = `
 @keyframes ap-fall {
@@ -63,6 +64,10 @@ const STAGES = [
 ];
 
 export default function RocketGame() {
+  const { isDark } = useTheme();
+  const textPrimary   = isDark ? "#ffffff" : "#0f172a";
+  const textSecondary = isDark ? "#9ca3af" : "#64748b";
+  const textMuted     = isDark ? "#6b7280" : "#94a3b8";
   const [phase,   setPhase]   = useState("idle");
   const [caught,  setCaught]  = useState(0);
   const [time,    setTime]    = useState(TIME);
@@ -163,10 +168,10 @@ export default function RocketGame() {
     <div className="flex flex-col items-center justify-center py-8">
       {/* Title */}
       <div className="text-center mb-4">
-        <h1 className="text-3xl md:text-4xl font-black text-white mb-1">
+        <h1 className="text-3xl md:text-4xl font-black mb-1" style={{ color: textPrimary }}>
           Bust Down the AP 💎
         </h1>
-        <p className="text-gray-400 text-sm">
+        <p className="text-sm" style={{ color: textSecondary }}>
           Click on the falling diamonds to ice out the Royal Oak
         </p>
       </div>
@@ -174,21 +179,21 @@ export default function RocketGame() {
       {/* HUD */}
       <div className="flex gap-8 mb-3 z-10">
         <div className="text-center">
-          <div className="text-gray-500 text-[10px] uppercase tracking-widest">Diamonds</div>
-          <div className="text-white font-black text-xl">
-            {caught}<span className="text-gray-500 text-sm font-normal"> / {TOTAL}</span>
+          <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Diamonds</div>
+          <div className="font-black text-xl" style={{ color: textPrimary }}>
+            {caught}<span className="text-sm font-normal" style={{ color: textMuted }}> / {TOTAL}</span>
           </div>
         </div>
         {phase === "playing" && (
           <div className="text-center">
-            <div className="text-gray-500 text-[10px] uppercase tracking-widest">Time</div>
-            <div className={`font-black text-xl ${time <= 10 ? "text-red-400" : "text-white"}`}>
+            <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Time</div>
+            <div className={`font-black text-xl ${time <= 10 ? "text-red-400" : ""}`} style={time <= 10 ? {} : { color: textPrimary }}>
               {time}s
             </div>
           </div>
         )}
         <div className="text-center">
-          <div className="text-gray-500 text-[10px] uppercase tracking-widest">Status</div>
+          <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Status</div>
           <div className="font-bold text-sm" style={{ color: stage.color }}>{stage.label}</div>
         </div>
       </div>
@@ -254,7 +259,7 @@ export default function RocketGame() {
             />
             {/* AP label */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-white font-black text-lg tracking-[0.22em]">AP</span>
+              <span className="font-black text-lg tracking-[0.22em]" style={{ color: "#ffffff" }}>AP</span>
               <span className="text-white/50 text-[8px] tracking-[0.28em] font-bold mt-0.5">
                 ROYAL OAK
               </span>
@@ -320,12 +325,13 @@ export default function RocketGame() {
         {effects.map(ef => (
           <div
             key={ef.id}
-            className="absolute pointer-events-none select-none font-black text-yellow-300 z-30"
+            className="absolute pointer-events-none select-none font-black z-30"
             style={{
               left: ef.x, top: ef.y,
               fontSize: ef.value > 1 ? "1.4rem" : "1rem",
               animation: "ap-catch 0.7s ease-out forwards",
               whiteSpace: "nowrap",
+              color: isDark ? "#fde047" : "#b45309",
             }}
           >
             +{ef.value} 💎
@@ -354,8 +360,8 @@ export default function RocketGame() {
                 <p className="text-white/60 text-xs mb-5">{TOTAL} / {TOTAL} diamonds set</p>
                 <button
                   onClick={startGame}
-                  className="px-8 py-2.5 rounded-full font-bold text-white text-base"
-                  style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)" }}
+                  className="px-8 py-2.5 rounded-full font-bold text-base"
+                  style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#fff" }}
                 >
                   Play Again
                 </button>
@@ -365,18 +371,18 @@ export default function RocketGame() {
                 <div className="text-5xl mb-3">
                   {progress >= 0.5 ? "💎" : "⌚"}
                 </div>
-                <h2 className="text-2xl font-black text-white mb-1">Time's Up!</h2>
+                <h2 className="text-2xl font-black mb-1" style={{ color: "#ffffff" }}>Time's Up!</h2>
                 <p className="font-bold text-lg mb-1" style={{ color: stage.color }}>
                   {stage.label}
                 </p>
-                <p className="text-gray-400 text-sm mb-1">{stage.msg}</p>
+                <p className="text-sm mb-1" style={{ color: "#9ca3af" }}>{stage.msg}</p>
                 <p className="text-white/60 text-sm mb-6">
                   {caught} / {TOTAL} diamonds set
                 </p>
                 <button
                   onClick={startGame}
-                  className="px-8 py-2.5 rounded-full font-bold text-white text-base"
-                  style={{ background: "linear-gradient(135deg,#3b82f6,#6366f1)" }}
+                  className="px-8 py-2.5 rounded-full font-bold text-base"
+                  style={{ background: "linear-gradient(135deg,#3b82f6,#6366f1)", color: "#fff" }}
                 >
                   Play Again
                 </button>
@@ -384,17 +390,13 @@ export default function RocketGame() {
             ) : (
               <>
                 <div className="text-6xl mb-4">💎</div>
-                <h2 className="text-2xl font-black text-white mb-2">Bust Down the AP</h2>
-                <p className="text-gray-400 text-sm text-center px-8 mb-1">
-                  Catch falling diamonds to ice out the AP Royal Oak.
-                </p>
-                <p className="text-gray-500 text-xs mb-6">
+                <p className="text-xs mb-6" style={{ color: textMuted }}>
                   Big diamonds = +3 &nbsp;|&nbsp; 45 seconds &nbsp;|&nbsp; Goal: {TOTAL} 💎
                 </p>
                 <button
                   onClick={startGame}
-                  className="px-8 py-2.5 rounded-full font-bold text-white text-base"
-                  style={{ background: "linear-gradient(135deg,#3b82f6,#6366f1)" }}
+                  className="px-8 py-2.5 rounded-full font-bold text-base"
+                  style={{ background: "linear-gradient(135deg,#3b82f6,#6366f1)", color: "#fff" }}
                 >
                   Start Busting 💎
                 </button>
@@ -406,7 +408,7 @@ export default function RocketGame() {
 
       {/* Status message */}
       {phase === "playing" && (
-        <p className="text-gray-500 text-sm mt-4 italic">{stage.msg}</p>
+        <p className="text-sm mt-4 italic" style={{ color: "#9ca3af" }}>{stage.msg}</p>
       )}
     </div>
   );

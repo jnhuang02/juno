@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import RocketGame from "./RocketGame";
+import UnethicalHoops from "./UnethicalHoops";
 import { TypeAnimation } from "react-type-animation";
 import resumePdf from "../assets/huang_resume.pdf";
+import { useTheme } from "../ThemeContext";
+
+const GAMES = [
+  { id: "rocket",  label: "BUST DOWN THE AP" },
+  { id: "hoops",   label: "UNETHICAL HOOPS"  },
+];
+
+const arrowBtn = {
+  background: "rgba(255,255,255,0.06)",
+  border: "2px solid rgba(255,255,255,0.14)",
+  color: "#a5b4fc",
+  fontFamily: "monospace",
+  fontWeight: 900,
+  fontSize: 15,
+  width: 30,
+  height: 30,
+  cursor: "pointer",
+  borderRadius: 4,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+  transition: "background 0.15s",
+};
 
 const Home = () => {
+  const { isDark } = useTheme();
+  const [gameIdx, setGameIdx] = useState(0);
+  const prev = () => setGameIdx(i => (i - 1 + GAMES.length) % GAMES.length);
+  const next = () => setGameIdx(i => (i + 1) % GAMES.length);
+
   return (
     <div
       className="relative flex flex-col w-full items-center justify-center min-h-screen text-white pt-24 pb-20 overflow-hidden"
-      style={{ background: "#080c18" }}
+      style={{ background: "var(--bg-primary)", transition: "background 0.3s ease" }}
     >
       {/* Ambient glow orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -98,10 +128,11 @@ const Home = () => {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <a href="mailto:huangjustinn@gmail.com">
               <button
-                className="px-8 py-3.5 rounded-full font-semibold text-white text-sm transition-all duration-200 hover:scale-105"
+                className="px-8 py-3.5 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105"
                 style={{
                   background: "linear-gradient(135deg, #3b82f6, #6366f1)",
                   boxShadow: "0 8px 32px rgba(99,102,241,0.35)",
+                  color: "#fff",
                 }}
               >
                 Hire Me
@@ -145,8 +176,32 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Right — Rocket Game */}
+        {/* Right — Game selector */}
         <div className="flex-shrink-0 flex flex-col items-center">
+          {/* NES-style selector */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+            <button style={arrowBtn} onClick={prev} aria-label="Previous game">◄</button>
+            <div style={{ minWidth: 180, textAlign: "center" }}>
+              <p style={{
+                fontFamily: "monospace", fontWeight: 900, fontSize: 11,
+                color: "#a5b4fc", letterSpacing: 3, margin: 0, textTransform: "uppercase",
+              }}>
+                {GAMES[gameIdx].label}
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 5 }}>
+                {GAMES.map((_, i) => (
+                  <div key={i} style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: i === gameIdx ? "#818cf8" : "rgba(255,255,255,0.2)",
+                    transition: "background 0.2s",
+                  }} />
+                ))}
+              </div>
+            </div>
+            <button style={arrowBtn} onClick={next} aria-label="Next game">►</button>
+          </div>
+
+          {/* Game frame */}
           <div
             className="rounded-2xl p-1"
             style={{
@@ -156,9 +211,9 @@ const Home = () => {
           >
             <div
               className="rounded-2xl overflow-hidden"
-              style={{ background: "rgba(14, 21, 37, 0.8)" }}
+              style={{ background: isDark ? "rgba(14,21,37,0.8)" : "rgba(230,236,255,0.85)" }}
             >
-              <RocketGame />
+              {gameIdx === 0 ? <RocketGame /> : <UnethicalHoops />}
             </div>
           </div>
         </div>

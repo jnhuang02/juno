@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
 import FadeIn from "./FadeIn";
+import { useTheme } from "../ThemeContext";
 
 const projects = [
   {
@@ -51,8 +52,9 @@ const projects = [
 ];
 
 const Projects = () => {
+  useTheme(); // subscribes to theme changes
   return (
-    <div className="w-full py-28 px-6" style={{ background: "#080c18" }}>
+    <div className="w-full py-28 px-6" style={{ background: "var(--bg-primary)", transition: "background 0.3s ease" }}>
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <FadeIn>
@@ -70,14 +72,14 @@ const Projects = () => {
               style={{ background: "linear-gradient(90deg, #3b82f6, transparent)" }}
             />
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
             Projects
           </h2>
           <div
             className="mt-4 mx-auto h-1 w-16 rounded-full"
             style={{ background: "linear-gradient(90deg, #3b82f6, #6366f1)" }}
           />
-          <p className="mt-6 text-gray-400 max-w-xl mx-auto text-base">
+          <p className="mt-6 max-w-xl mx-auto text-base" style={{ color: "var(--text-secondary)" }}>
             Click any card to flip it and learn more. A selection of work spanning web development,
             machine learning, and data science.
           </p>

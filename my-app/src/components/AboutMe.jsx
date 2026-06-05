@@ -2,6 +2,7 @@ import React from "react";
 import { TypeAnimation } from "react-type-animation";
 import pfp from "../imgs/pfp.png";
 import FadeIn from "./FadeIn";
+import { useTheme } from "../ThemeContext";
 
 const skills = [
   {
@@ -38,10 +39,11 @@ const timeline = [
 ];
 
 const AboutMe = () => {
+  const { isDark } = useTheme();
   return (
     <div
       className="w-full py-28 px-6"
-      style={{ background: "#0e1525" }}
+      style={{ background: "var(--bg-secondary)", transition: "background 0.3s ease" }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
@@ -101,8 +103,8 @@ const AboutMe = () => {
             <div
               className="rounded-2xl px-6 py-5"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
               }}
             >
               <TypeAnimation
@@ -199,8 +201,8 @@ const AboutMe = () => {
               <div
                 className="rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-subtle)",
                 }}
               >
                 <div className="flex items-center gap-3 mb-5">
