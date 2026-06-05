@@ -9,6 +9,8 @@ import FeaturedWriting from './components/FeaturedWriting';
 import ContactMe from './components/ContactMe';
 import ChatBot from "./components/ChatBot";
 import ArticlePage from './components/ArticlePage';
+import UCLAPage from './components/UCLAPage';
+import UCSDPage from './components/UCSDPage';
 
 // Cloud/wave divider — fill color must match the NEXT section's bg
 const CloudDivider = ({ fromColor, toColor, flip = false }) => (
@@ -97,6 +99,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Portfolio />} />
       <Route path="/article/:slug" element={<ArticlePage />} />
+      <Route path="/education/ucla" element={<UCLAPage />} />
+      <Route path="/education/ucsd" element={<UCSDPage />} />
     </Routes>
   );
 }

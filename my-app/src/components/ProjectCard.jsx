@@ -71,7 +71,7 @@ const ProjectCard = ({ title, description, image, link, tags = [] }) => {
         >
           <div className="text-center">
             <h3 className="text-lg font-bold mb-3" style={{ color: "#ffffff" }}>{title}</h3>
-            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{description}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "#9ca3af" }}>{description}</p>
           </div>
           <a
             href={link}

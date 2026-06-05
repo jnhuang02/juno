@@ -8,13 +8,16 @@ function NavBar() {
   const navigate   = useNavigate();
   const location   = useLocation();
   const { isDark, toggle } = useTheme();
-  const isArticlePage = location.pathname.startsWith("/article");
+  const isArticlePage   = location.pathname.startsWith("/article");
+  const isEducationPage = location.pathname.startsWith("/education");
+  const isExternalPage  = isArticlePage || isEducationPage;
 
   const textActive   = "rgba(255,255,255,1)";
   const textInactive = "rgba(255,255,255,0.5)";
 
   useEffect(() => {
-    if (isArticlePage) { setActive("writing"); return; }
+    if (isArticlePage)   { setActive("writing"); return; }
+    if (isEducationPage) { setActive("about");   return; }
     const onScroll = () => {
       const nearBottom =
         window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
@@ -28,11 +31,11 @@ function NavBar() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isArticlePage]);
+  }, [isArticlePage, isEducationPage]);
 
   const scrollTo = (id) => {
     setMenuOpen(false);
-    if (isArticlePage) { sessionStorage.setItem("scrollTarget", id); navigate("/"); }
+    if (isExternalPage) { sessionStorage.setItem("scrollTarget", id); navigate("/"); }
     else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 

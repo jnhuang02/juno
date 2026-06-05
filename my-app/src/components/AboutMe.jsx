@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import pfp from "../imgs/pfp.png";
 import FadeIn from "./FadeIn";
@@ -28,18 +29,23 @@ const timeline = [
     title: "MS Applied Statistics & Data Science",
     org: "UCLA",
     detail: "Focus on AI/ML",
+    route: "/education/ucla",
+    accentColor: "#2774AE",
   },
   {
     year: "2020–2024",
     title: "BS Math-Computer Science",
     org: "UC San Diego",
     detail: "minor in Data Science, minor Business-Economics",
+    route: "/education/ucsd",
+    accentColor: "#006A96",
   },
-
 ];
 
 const AboutMe = () => {
   const { isDark } = useTheme();
+  const navigate = useNavigate();
+  const [hoveredIdx, setHoveredIdx] = useState(null);
   return (
     <div
       className="w-full py-28 px-6"
@@ -152,43 +158,71 @@ const AboutMe = () => {
               className="absolute left-[19px] top-4 bottom-4 w-px hidden md:block"
               style={{ background: "linear-gradient(to bottom, #3b82f6, #6366f1, transparent)" }}
             />
-            {timeline.map(({ year, title, org, detail }, i) => (
-              <FadeIn key={title} delay={i * 100} className="flex gap-6 items-start">
-                <div
-                  className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold"
-                  style={{
-                    background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-                    boxShadow: "0 0 16px rgba(99,102,241,0.4)",
-                    color: "#fff",
-                  }}
-                >
-                  ●
-                </div>
-                <div
-                  className="flex-1 rounded-2xl px-6 py-4"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                  }}
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                    <span className="font-bold text-white">{title}</span>
-                    <span
-                      className="text-xs font-semibold px-3 py-1 rounded-full"
-                      style={{
-                        background: "rgba(99,102,241,0.15)",
-                        color: "#818cf8",
-                        border: "1px solid rgba(99,102,241,0.2)",
-                      }}
-                    >
-                      {year}
-                    </span>
+            {timeline.map(({ year, title, org, detail, route, accentColor }, i) => {
+              const hov = hoveredIdx === i;
+              return (
+                <FadeIn key={title} delay={i * 100} className="flex gap-6 items-start">
+                  {/* Node dot */}
+                  <div
+                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
+                    style={{
+                      background: hov
+                        ? `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`
+                        : "linear-gradient(135deg, #3b82f6, #6366f1)",
+                      boxShadow: hov
+                        ? `0 0 24px ${accentColor}70`
+                        : "0 0 16px rgba(99,102,241,0.4)",
+                      color: "#fff",
+                      transform: hov ? "scale(1.15)" : "scale(1)",
+                    }}
+                  >●</div>
+
+                  {/* Card */}
+                  <div
+                    className="flex-1 rounded-2xl px-6 py-4 cursor-pointer"
+                    onClick={() => navigate(route)}
+                    onMouseEnter={() => setHoveredIdx(i)}
+                    onMouseLeave={() => setHoveredIdx(null)}
+                    style={{
+                      background: hov ? `${accentColor}0e` : "rgba(255,255,255,0.03)",
+                      border: `1px solid ${hov ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
+                      boxShadow: hov ? `0 8px 40px ${accentColor}20` : "none",
+                      transform: hov ? "translateY(-2px) scale(1.005)" : "none",
+                      transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                    }}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                      <span className="font-bold" style={{ color: "var(--text-primary)" }}>{title}</span>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="text-xs font-semibold px-3 py-1 rounded-full"
+                          style={{
+                            background: hov ? `${accentColor}22` : "rgba(99,102,241,0.15)",
+                            color: hov ? accentColor : "#818cf8",
+                            border: `1px solid ${hov ? accentColor + "45" : "rgba(99,102,241,0.2)"}`,
+                            transition: "all 0.2s",
+                          }}
+                        >{year}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm font-medium mb-1" style={{ color: hov ? accentColor : "#60a5fa" }}>{org}</p>
+                    <p className="text-gray-500 text-sm mb-2">{detail}</p>
+
+                    {/* Explore pill */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", gap: 5,
+                        background: `${accentColor}18`, border: `1px solid ${accentColor}40`,
+                        color: accentColor, fontSize: 11, fontWeight: 700,
+                        padding: "4px 12px", borderRadius: 100,
+                      }}>
+                        Explore →
+                      </span>
+                    </div>
                   </div>
-                  <p className="text-blue-400 text-sm font-medium mb-1">{org}</p>
-                  <p className="text-gray-500 text-sm">{detail}</p>
-                </div>
-              </FadeIn>
-            ))}
+                </FadeIn>
+              );
+            })}
           </div>
         </div>
 
@@ -209,7 +243,7 @@ const AboutMe = () => {
                   <span className="text-2xl">{icon}</span>
                   <h4
                     className="text-xs font-semibold uppercase tracking-widest"
-                    style={{ color: "#60a5fa" }}
+                    style={{ color: isDark ? "#60a5fa" : "#1d4ed8" }}
                   >
                     {category}
                   </h4>
@@ -220,9 +254,9 @@ const AboutMe = () => {
                       key={skill}
                       className="px-3 py-1 text-sm rounded-full font-medium"
                       style={{
-                        background: "rgba(59,130,246,0.08)",
-                        border: "1px solid rgba(59,130,246,0.2)",
-                        color: "#93c5fd",
+                        background: isDark ? "rgba(59,130,246,0.08)" : "rgba(29,78,216,0.08)",
+                        border: isDark ? "1px solid rgba(59,130,246,0.2)" : "1px solid rgba(29,78,216,0.25)",
+                        color: isDark ? "#93c5fd" : "#1d4ed8",
                       }}
                     >
                       {skill}

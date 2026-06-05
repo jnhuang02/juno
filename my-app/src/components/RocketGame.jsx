@@ -325,13 +325,12 @@ export default function RocketGame() {
         {effects.map(ef => (
           <div
             key={ef.id}
-            className="absolute pointer-events-none select-none font-black z-30"
+            className="absolute pointer-events-none select-none font-black text-yellow-300 z-30"
             style={{
               left: ef.x, top: ef.y,
               fontSize: ef.value > 1 ? "1.4rem" : "1rem",
               animation: "ap-catch 0.7s ease-out forwards",
               whiteSpace: "nowrap",
-              color: isDark ? "#fde047" : "#b45309",
             }}
           >
             +{ef.value} 💎
@@ -371,7 +370,7 @@ export default function RocketGame() {
                 <div className="text-5xl mb-3">
                   {progress >= 0.5 ? "💎" : "⌚"}
                 </div>
-                <h2 className="text-2xl font-black mb-1" style={{ color: "#ffffff" }}>Time's Up!</h2>
+                <h2 className="text-2xl font-black text-white mb-1">Time's Up!</h2>
                 <p className="font-bold text-lg mb-1" style={{ color: stage.color }}>
                   {stage.label}
                 </p>
@@ -408,7 +407,7 @@ export default function RocketGame() {
 
       {/* Status message */}
       {phase === "playing" && (
-        <p className="text-sm mt-4 italic" style={{ color: "#9ca3af" }}>{stage.msg}</p>
+        <p className="text-sm mt-4 italic" style={{ color: textMuted }}>{stage.msg}</p>
       )}
     </div>
   );
