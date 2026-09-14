@@ -4,8 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/src/imgs/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/dist/styles.css" rel="stylesheet">
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#11141f" />
     <title>Justin's Personal Website</title>
+
+    <!-- Instrument Sans / Instrument Serif + Geist Mono (Tandem & MLCommons typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply the stored theme before first paint -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        document.documentElement.setAttribute(
+          "data-theme",
+          stored === "light" ? "light" : "dark"
+        );
+      })();
+    </script>
+
     <base href="./" />
   </head>
   <body>

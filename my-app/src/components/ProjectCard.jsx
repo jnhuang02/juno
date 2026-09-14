@@ -1,96 +1,53 @@
-import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const ProjectCard = ({ title, description, image, link, tags = [] }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+const ProjectCard = ({ index, slug, title, description, image, tags = [], role, timeline }) => (
+  <Link to={`/project/${slug}`} className="project-card" style={{ textDecoration: "none" }}>
+    <div className="project-card__media">
+      <img src={image} alt="" loading="lazy" />
+    </div>
 
-  return (
-    <div
-      className="w-full cursor-pointer"
-      style={{ perspective: "1000px", height: "260px" }}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
-      <div
-        className="relative w-full h-full transition-transform duration-700"
+    <div className="project-card__body">
+      <div className="project-card__top">
+        <span className="label">{String(index).padStart(2, "0")}</span>
+        {(role || timeline) && (
+          <span className="label" style={{ textTransform: "none", letterSpacing: "0.04em", fontSize: 11.5 }}>
+            {[role, timeline].filter(Boolean).join(" · ")}
+          </span>
+        )}
+      </div>
+
+      <h3
         style={{
-          transformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          margin: "14px 0 0",
+          fontSize: "1.3rem",
+          fontWeight: 600,
+          letterSpacing: "-0.025em",
+          color: "var(--text-primary)",
         }}
       >
-        {/* Front */}
-        <div
-          className="absolute inset-0 rounded-2xl overflow-hidden flex items-end"
-          style={{
-            backfaceVisibility: "hidden",
-            pointerEvents: isFlipped ? "none" : "auto",
-            backgroundImage: `url(${image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(8,12,24,0.95) 0%, rgba(8,12,24,0.5) 50%, rgba(8,12,24,0.2) 100%)",
-            }}
-          />
-          <div className="relative z-10 p-5 w-full">
-            <h3 className="text-lg font-bold leading-tight" style={{ color: "#ffffff" }}>{title}</h3>
-            {tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2 py-0.5 rounded-full font-medium"
-                    style={{
-                      background: "rgba(99,102,241,0.25)",
-                      border: "1px solid rgba(99,102,241,0.35)",
-                      color: "#a5b4fc",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-            <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>Click to learn more →</p>
-          </div>
-        </div>
+        {title}
+      </h3>
 
-        {/* Back */}
-        <div
-          className="absolute inset-0 rounded-2xl flex flex-col items-center justify-between p-6"
-          style={{
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            background: "linear-gradient(135deg, #0e1525, #131d35)",
-            border: "1px solid rgba(99,102,241,0.25)",
-            boxShadow: "0 0 40px rgba(99,102,241,0.1)",
-          }}
-        >
-          <div className="text-center">
-            <h3 className="text-lg font-bold mb-3" style={{ color: "#ffffff" }}>{title}</h3>
-            <p className="text-sm leading-relaxed" style={{ color: "#9ca3af" }}>{description}</p>
-          </div>
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="mt-4 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 inline-block"
-            style={{
-              background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-              boxShadow: "0 4px 20px rgba(99,102,241,0.4)",
-              color: "#fff",
-            }}
-          >
-            View Project
-          </a>
+      <p className="body-text" style={{ margin: "10px 0 0", fontSize: "0.9375rem" }}>
+        {description}
+      </p>
+
+      {tags.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 18 }}>
+          {tags.map((tag) => (
+            <span key={tag} className="tag">{tag}</span>
+          ))}
         </div>
-      </div>
+      )}
+
+      <span className="link-arrow project-card__cta" style={{ marginTop: 22 }}>
+        View case study
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </span>
     </div>
-  );
-};
+  </Link>
+);
 
 export default ProjectCard;

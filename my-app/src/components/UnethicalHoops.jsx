@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-const CW = 400;
-const CH = 260;
+const CW = 460;
+const CH = 340;
 const FISH_X = 75;
 const FISH_R = 10;
-const GRAVITY = 0.13;
-const JUMP_VY = -3.0;
+const GRAVITY = 0.22;
+const JUMP_VY = -4.0;
 const PIPE_W = 32;
 const PIPE_GAP = 120;
-const PIPE_SPEED = 1.1;
-const SPAWN_EVERY = 150;
+const PIPE_SPEED = 1.9;
+const SPAWN_EVERY = 100;
 
 // ─── Pure drawing functions (stable references, no component deps) ────────────
 
@@ -406,6 +406,17 @@ export default function UnethicalHoops() {
   }, [jump]);
 
   return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "32px 0" }}>
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <h1 style={{ color: "#ffffff", fontFamily: "monospace", fontSize: 22, fontWeight: 900, margin: "0 0 4px", letterSpacing: 1 }}>
+          Unethical Hoops 🏀
+        </h1>
+        <p style={{ color: "#9ca3af", fontFamily: "monospace", fontSize: 12, margin: 0 }}>
+          Tap or press Space to flop through the hoops
+        </p>
+      </div>
+
     <div style={{ position: "relative", display: "inline-block" }}>
       <canvas
         ref={canvasRef}
@@ -464,6 +475,7 @@ export default function UnethicalHoops() {
           </p>
         </div>
       )}
+    </div>
     </div>
   );
 }

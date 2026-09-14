@@ -1,233 +1,280 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
 
-function NavBar() {
-  const [active, setActive]     = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const navigate   = useNavigate();
-  const location   = useLocation();
-  const { isDark, toggle } = useTheme();
-  const isArticlePage   = location.pathname.startsWith("/article");
-  const isEducationPage = location.pathname.startsWith("/education");
-  const isExternalPage  = isArticlePage || isEducationPage;
+const SECTIONS = ["home", "about", "projects", "writing", "contact"];
 
-  const textActive   = "rgba(255,255,255,1)";
-  const textInactive = "rgba(255,255,255,0.5)";
+const SunIcon = ({ size = 13 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="4.2" />
+    <line x1="12" y1="2" x2="12" y2="4" /><line x1="12" y1="20" x2="12" y2="22" />
+    <line x1="4.9" y1="4.9" x2="6.3" y2="6.3" /><line x1="17.7" y1="17.7" x2="19.1" y2="19.1" />
+    <line x1="2" y1="12" x2="4" y2="12" /><line x1="20" y1="12" x2="22" y2="12" />
+    <line x1="4.9" y1="19.1" x2="6.3" y2="17.7" /><line x1="17.7" y1="6.3" x2="19.1" y2="4.9" />
+  </svg>
+);
+
+const MoonIcon = ({ size = 13 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+  </svg>
+);
+
+function NavBar() {
+  const [active, setActive] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isDark, toggle } = useTheme();
+
+  const isArticlePage = location.pathname.startsWith("/article");
+  const isProjectPage = location.pathname.startsWith("/project");
+  const isEducationPage = location.pathname.startsWith("/education");
+  const isExternalPage = isArticlePage || isProjectPage || isEducationPage;
 
   useEffect(() => {
-    if (isArticlePage)   { setActive("writing"); return; }
-    if (isEducationPage) { setActive("about");   return; }
+    if (isArticlePage) { setActive("writing"); return; }
+    if (isProjectPage) { setActive("projects"); return; }
+    if (isEducationPage) { setActive("about"); return; }
+
     const onScroll = () => {
+      setScrolled(window.scrollY > 8);
       const nearBottom =
         window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
       if (nearBottom) { setActive("contact"); return; }
-
-      const sections = ["home", "about", "projects", "writing", "contact"];
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && window.scrollY >= el.offsetTop - 120) { setActive(sections[i]); break; }
+      for (let i = SECTIONS.length - 1; i >= 0; i--) {
+        const el = document.getElementById(SECTIONS[i]);
+        if (el && window.scrollY >= el.offsetTop - 140) { setActive(SECTIONS[i]); break; }
       }
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isArticlePage, isEducationPage]);
+  }, [isArticlePage, isProjectPage, isEducationPage]);
 
   const scrollTo = (id) => {
     setMenuOpen(false);
-    if (isExternalPage) { sessionStorage.setItem("scrollTarget", id); navigate("/"); }
-    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    if (isExternalPage) {
+      sessionStorage.setItem("scrollTarget", id);
+      navigate("/");
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const navLinks = [
-    { label: "Home",     id: "home"     },
-    { label: "About",    id: "about"    },
+    { label: "Home", id: "home" },
+    { label: "About", id: "about" },
     { label: "Projects", id: "projects" },
-    { label: "Writing",  id: "writing"  },
+    { label: "Writing", id: "writing" },
   ];
 
-  /* ── shared island styles ── */
-  const islandBase = {
+  const barStyle = {
     position: "fixed",
-    top: 14,
-    left: "50%",
-    transform: "translateX(-50%)",
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 9999,
-    background: "rgba(10, 10, 14, 0.88)",
-    backdropFilter: "blur(24px)",
-    WebkitBackdropFilter: "blur(24px)",
-    border: "1px solid rgba(255,255,255,0.09)",
-    boxShadow: "0 8px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset",
-    transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    background: "var(--nav-bg)",
+    backdropFilter: "blur(14px)",
+    WebkitBackdropFilter: "blur(14px)",
+    borderBottom: `1px solid ${scrolled ? "var(--nav-border)" : "transparent"}`,
+    transition: "border-color 0.25s ease, background 0.25s ease",
+  };
+
+  const markStyle = {
+    width: 22,
+    height: 22,
+    borderRadius: 2,
+    background: "var(--accent)",
+    display: "grid",
+    placeItems: "center",
+    fontFamily: "var(--font-mono)",
+    fontSize: 10,
+    fontWeight: 500,
+    color: "#11141f",
+    letterSpacing: 0,
+    flexShrink: 0,
+  };
+
+  const linkStyle = (id) => ({
+    position: "relative",
+    background: "transparent",
+    border: 0,
+    padding: "6px 2px",
+    fontSize: "0.9375rem",
+    fontWeight: 500,
+    letterSpacing: "-0.01em",
+    color: active === id ? "var(--text-primary)" : "var(--text-secondary)",
+    borderBottom: `1px solid ${active === id ? "var(--accent-alt)" : "transparent"}`,
+    transition: "color 0.18s ease, border-color 0.18s ease",
+  });
+
+  const iconButtonStyle = {
+    display: "grid",
+    placeItems: "center",
+    width: 34,
+    height: 34,
+    borderRadius: "var(--radius)",
+    border: "1px solid var(--border-subtle)",
+    background: "transparent",
+    color: "var(--text-secondary)",
+    transition: "color 0.18s ease, border-color 0.18s ease",
   };
 
   return (
     <>
-      {/* ── Desktop island ── */}
-      <nav
-        className="hidden md:flex items-center gap-1 px-3 py-2"
-        style={{ ...islandBase, borderRadius: 100 }}
-      >
-        {/* Logo */}
-        <button
-          onClick={() => scrollTo("home")}
-          className="text-lg font-extrabold tracking-tight px-2 py-1 mr-1"
+      {/* ── Desktop: slim hairline header ── */}
+      <nav style={barStyle} className="hidden md:block">
+        <div
+          className="shell"
           style={{
-            background: "linear-gradient(135deg, #60a5fa, #818cf8)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: 64,
+            gap: 24,
           }}
         >
-          JH
-        </button>
-
-        {/* Divider */}
-        <span className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.12)" }} />
-
-        {/* Nav links */}
-        {navLinks.map(({ label, id }) => (
-          <button
-            key={id}
-            onClick={() => scrollTo(id)}
-            className="relative px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200"
-            style={{
-              color: active === id ? textActive : textInactive,
-              background: active === id ? "rgba(255,255,255,0.08)" : "transparent",
-            }}
-          >
-            {label}
-          </button>
-        ))}
-
-        {/* Divider */}
-        <span className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.12)" }} />
-
-        {/* Contact */}
-        <button
-          onClick={() => scrollTo("contact")}
-          className="px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 hover:opacity-90"
-          style={{
-            background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-            color: "#fff",
-            boxShadow: "0 0 16px rgba(99,102,241,0.35)",
-          }}
-        >
-          Contact
-        </button>
-
-        {/* Theme toggle */}
-        <button
-          onClick={toggle}
-          className="flex items-center justify-center w-8 h-8 rounded-full ml-1 transition-all duration-200"
-          style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
-          aria-label="Toggle theme"
-        >
-          {isDark ? (
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-          ) : (
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-          )}
-        </button>
-      </nav>
-
-      {/* ── Mobile island ── */}
-      <nav
-        className="md:hidden"
-        style={{
-          ...islandBase,
-          borderRadius: menuOpen ? 24 : 100,
-          width: menuOpen ? "calc(100vw - 32px)" : "auto",
-          maxWidth: 400,
-          overflow: "hidden",
-        }}
-      >
-        {/* Collapsed bar */}
-        <div className="flex items-center justify-between px-4 py-2.5">
+          {/* Wordmark */}
           <button
             onClick={() => scrollTo("home")}
-            className="text-lg font-extrabold tracking-tight"
             style={{
-              background: "linear-gradient(135deg, #60a5fa, #818cf8)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              background: "transparent",
+              border: 0,
+              padding: 0,
             }}
           >
-            JH
+            <span style={markStyle}>JH</span>
+            <span
+              style={{
+                fontSize: "0.9375rem",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "var(--text-primary)",
+              }}
+            >
+              Justin Huang
+            </span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggle}
-              className="flex items-center justify-center w-7 h-7 rounded-full transition-all duration-200"
-              style={{ background: "rgba(255,255,255,0.07)" }}
-              aria-label="Toggle theme"
-            >
-              {isDark ? (
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5"/>
-                  <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                  <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-              ) : (
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-              )}
-            </button>
-
-            {/* Hamburger */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="flex flex-col gap-1 p-1.5 rounded-full transition-all duration-200"
-              style={{ background: "rgba(255,255,255,0.07)" }}
-              aria-label="Toggle menu"
-            >
-              <span className="block w-4 h-0.5 bg-white transition-all duration-300"
-                style={{ transform: menuOpen ? "translateY(6px) rotate(45deg)" : "none" }} />
-              <span className="block w-4 h-0.5 bg-white transition-all duration-300"
-                style={{ opacity: menuOpen ? 0 : 1 }} />
-              <span className="block w-4 h-0.5 bg-white transition-all duration-300"
-                style={{ transform: menuOpen ? "translateY(-6px) rotate(-45deg)" : "none" }} />
-            </button>
-          </div>
-        </div>
-
-        {/* Expanded menu */}
-        {menuOpen && (
-          <div
-            className="flex flex-col px-3 pb-3 gap-1"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
-          >
+          {/* Section links */}
+          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
             {navLinks.map(({ label, id }) => (
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
-                className="text-left px-3 py-2.5 text-sm font-medium rounded-xl transition-colors duration-150"
-                style={{
-                  color: active === id ? textActive : textInactive,
-                  background: active === id ? "rgba(255,255,255,0.08)" : "transparent",
+                style={linkStyle(id)}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-primary)"; }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color =
+                    active === id ? "var(--text-primary)" : "var(--text-secondary)";
                 }}
               >
                 {label}
               </button>
             ))}
+          </div>
+
+          {/* Actions */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button
+              onClick={toggle}
+              style={iconButtonStyle}
+              aria-label="Toggle color theme"
+              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-primary)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border-subtle)"; }}
+            >
+              {isDark ? <SunIcon /> : <MoonIcon />}
+            </button>
             <button
               onClick={() => scrollTo("contact")}
-              className="mt-1 py-2.5 rounded-xl text-sm font-semibold"
-              style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)", color: "#fff" }}
+              className="btn btn-primary btn-mono"
+              style={{ padding: "8px 14px" }}
             >
               Contact
             </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Mobile: compact header + drawer ── */}
+      <nav style={barStyle} className="md:hidden">
+        <div
+          className="shell"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: 58,
+          }}
+        >
+          <button
+            onClick={() => scrollTo("home")}
+            style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "transparent", border: 0, padding: 0 }}
+          >
+            <span style={{ ...markStyle, width: 20, height: 20, fontSize: 9 }}>JH</span>
+            <span style={{ fontSize: "0.9rem", fontWeight: 600, letterSpacing: "-0.02em" }}>
+              Justin Huang
+            </span>
+          </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button onClick={toggle} style={{ ...iconButtonStyle, width: 32, height: 32 }} aria-label="Toggle color theme">
+              {isDark ? <SunIcon size={12} /> : <MoonIcon size={12} />}
+            </button>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              style={{ ...iconButtonStyle, width: 32, height: 32 }}
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+            >
+              <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform 0.25s ease", transform: menuOpen ? "translateY(5px) rotate(45deg)" : "none" }} />
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", opacity: menuOpen ? 0 : 1, transition: "opacity 0.2s ease" }} />
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform 0.25s ease", transform: menuOpen ? "translateY(-5px) rotate(-45deg)" : "none" }} />
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {menuOpen && (
+          <div style={{ borderTop: "1px solid var(--border-subtle)", background: "var(--nav-bg)" }}>
+            <div className="shell" style={{ paddingBlock: 8 }}>
+              {navLinks.map(({ label, id }) => (
+                <button
+                  key={id}
+                  onClick={() => scrollTo(id)}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "left",
+                    background: "transparent",
+                    border: 0,
+                    borderBottom: "1px solid var(--border-subtle)",
+                    padding: "14px 0",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    color: active === id ? "var(--accent-alt)" : "var(--text-primary)",
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+              <button
+                onClick={() => scrollTo("contact")}
+                className="btn btn-primary btn-mono"
+                style={{ width: "100%", justifyContent: "center", marginTop: 14, marginBottom: 8 }}
+              >
+                Contact
+              </button>
+            </div>
           </div>
         )}
       </nav>

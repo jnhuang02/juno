@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 
@@ -231,44 +231,47 @@ const ChatBot = () => {
           style={{
             width: 380,
             height: 520,
-            background: "linear-gradient(160deg, #0d1120 0%, #080c18 100%)",
-            border: "1px solid rgba(99,102,241,0.2)",
-            borderRadius: 20,
-            boxShadow: "0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
+            background: "var(--bg-primary)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "var(--radius-lg)",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.28)",
           }}
         >
           {/* Header */}
           <div
             className="flex items-center gap-3 px-5 py-4 flex-shrink-0"
-            style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ borderBottom: "1px solid var(--border-subtle)" }}
           >
             {/* Avatar */}
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-9 h-9 flex items-center justify-center flex-shrink-0"
               style={{
-                background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-                boxShadow: "0 0 16px rgba(99,102,241,0.4)",
+                background: "var(--btn-bg)",
+                color: "var(--btn-fg)",
+                borderRadius: "var(--radius)",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-semibold leading-none mb-1">Justin's Assistant</p>
+              <p className="text-sm font-semibold leading-none mb-1" style={{ color: "var(--text-primary)" }}>
+                Justin's Assistant
+              </p>
               <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" style={{ boxShadow: "0 0 6px #34d399" }} />
-                <span className="text-xs" style={{ color: "#6b7280" }}>Online</span>
+                <span className="w-1.5 h-1.5" style={{ background: "var(--accent-line)", borderRadius: "50%" }} />
+                <span className="label" style={{ fontSize: 10 }}>Online</span>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150"
-              style={{ color: "#6b7280" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.color = "#fff"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#6b7280"; }}
+              className="w-8 h-8 flex items-center justify-center transition-all duration-150"
+              style={{ color: "var(--text-muted)", background: "transparent", border: 0, borderRadius: "var(--radius)" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--bg-card)"; e.currentTarget.style.color = "var(--text-primary)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text-muted)"; }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -282,10 +285,10 @@ const ChatBot = () => {
               <div key={index} className={`flex gap-2.5 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.sender === "bot" && (
                   <div
-                    className="w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center mt-0.5"
-                    style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}
+                    className="w-7 h-7 flex-shrink-0 flex items-center justify-center mt-0.5"
+                    style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius)", color: "var(--text-secondary)" }}
                   >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                   </div>
@@ -293,28 +296,27 @@ const ChatBot = () => {
                 <div
                   className="max-w-[72%] px-4 py-2.5 text-sm leading-relaxed"
                   style={msg.sender === "user" ? {
-                    background: "linear-gradient(135deg, #3b82f6, #6366f1)",
-                    borderRadius: "14px 14px 4px 14px",
-                    color: "#fff",
-                    boxShadow: "0 4px 16px rgba(99,102,241,0.25)",
+                    background: "var(--btn-bg)",
+                    borderRadius: "var(--radius) var(--radius) 0 var(--radius)",
+                    color: "var(--btn-fg)",
                   } : {
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                    borderRadius: "14px 14px 14px 4px",
-                    color: "#d1d5db",
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "0 var(--radius) var(--radius) var(--radius)",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   {msg.text}
                   {msg.streaming && (
                     <span
                       className="inline-block w-0.5 ml-0.5 align-middle"
-                      style={{ height: "0.9em", background: "#818cf8", animation: "pulse 1s infinite" }}
+                      style={{ height: "0.9em", background: "var(--accent-alt)", animation: "pulse 1s infinite" }}
                     />
                   )}
                   {msg.streaming && msg.text === "" && (
                     <span className="flex gap-1 py-0.5">
                       {[0, 150, 300].map(d => (
-                        <span key={d} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#6366f1", animationDelay: `${d}ms` }} />
+                        <span key={d} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "var(--accent-alt)", animationDelay: `${d}ms` }} />
                       ))}
                     </span>
                   )}
@@ -327,13 +329,14 @@ const ChatBot = () => {
           {/* Input */}
           <div
             className="px-4 pb-4 pt-3 flex-shrink-0"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ borderTop: "1px solid var(--border-subtle)" }}
           >
             <div
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2.5 transition-all duration-200"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: `1px solid ${input.length > 0 ? "rgba(99,102,241,0.4)" : "rgba(255,255,255,0.08)"}`,
+                background: "transparent",
+                borderRadius: "var(--radius)",
+                border: `1px solid ${input.length > 0 ? "var(--border-accent)" : "var(--border-subtle)"}`,
               }}
             >
               <input
@@ -343,30 +346,31 @@ const ChatBot = () => {
                 onKeyDown={handleKeyPress}
                 disabled={disabled}
                 placeholder="Ask me about Justin…"
-                className="flex-1 bg-transparent text-sm text-white placeholder-gray-600 outline-none disabled:opacity-40"
+                className="flex-1 bg-transparent text-sm outline-none disabled:opacity-40"
+                style={{ color: "var(--text-primary)" }}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={disabled || input.trim() === ""}
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-150"
+                className="w-8 h-8 flex items-center justify-center flex-shrink-0 transition-all duration-150"
                 style={{
-                  background: input.trim() && !disabled
-                    ? "linear-gradient(135deg, #3b82f6, #6366f1)"
-                    : "rgba(255,255,255,0.07)",
-                  boxShadow: input.trim() && !disabled ? "0 0 12px rgba(99,102,241,0.35)" : "none",
+                  background: input.trim() && !disabled ? "var(--btn-bg)" : "var(--bg-card)",
+                  color: input.trim() && !disabled ? "var(--btn-fg)" : "var(--text-muted)",
+                  border: "1px solid var(--border-subtle)",
+                  borderRadius: "var(--radius)",
                   cursor: input.trim() && !disabled ? "pointer" : "not-allowed",
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" />
                 </svg>
               </button>
             </div>
             <div className="flex justify-between mt-2 px-1">
-              <span className="text-xs" style={{ color: "rgba(107,114,128,0.6)" }}>
+              <span className="label" style={{ fontSize: 10 }}>
                 {input.length > 0 ? `${input.length}/${MAX_INPUT_LENGTH}` : ""}
               </span>
-              <span className="text-xs" style={{ color: "rgba(107,114,128,0.6)" }}>
+              <span className="label" style={{ fontSize: 10 }}>
                 {MAX_SESSION_MESSAGES - userMessageCount} messages remaining
               </span>
             </div>
@@ -377,17 +381,13 @@ const ChatBot = () => {
       {/* ── FAB trigger ── */}
       <button
         onClick={() => setIsOpen((o) => !o)}
-        className="flex items-center gap-2.5 pl-4 pr-5 py-3 rounded-2xl font-semibold text-sm transition-all duration-200"
+        className="btn btn-primary btn-mono"
         style={{
-          color: "#fff",
-          background: isOpen
-            ? "rgba(99,102,241,0.15)"
-            : "linear-gradient(135deg, #3b82f6, #6366f1)",
-          border: isOpen ? "1px solid rgba(99,102,241,0.35)" : "1px solid transparent",
-          boxShadow: isOpen ? "none" : "0 8px 32px rgba(99,102,241,0.4)",
+          padding: "12px 18px",
+          background: isOpen ? "var(--bg-card)" : "var(--btn-bg)",
+          color: isOpen ? "var(--text-primary)" : "var(--btn-fg)",
+          border: isOpen ? "1px solid var(--border-subtle)" : "1px solid transparent",
         }}
-        onMouseEnter={e => { if (!isOpen) e.currentTarget.style.boxShadow = "0 8px 40px rgba(99,102,241,0.6)"; }}
-        onMouseLeave={e => { if (!isOpen) e.currentTarget.style.boxShadow = "0 8px 32px rgba(99,102,241,0.4)"; }}
       >
         {isOpen ? (
           <>

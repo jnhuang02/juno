@@ -1,269 +1,244 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TypeAnimation } from "react-type-animation";
 import pfp from "../imgs/pfp.png";
 import FadeIn from "./FadeIn";
-import { useTheme } from "../ThemeContext";
+import SectionHeader from "./SectionHeader";
 
 const skills = [
   {
     category: "Languages",
-    icon: "⌨️",
     items: ["Python", "JavaScript", "Java", "R", "SQL", "C++"],
   },
   {
     category: "Frameworks & Libraries",
-    icon: "🧩",
     items: ["React", "Node.js", "TensorFlow", "PyTorch", "Tailwind CSS", "scikit-learn", "Apache Spark"],
   },
   {
     category: "Tools & Platforms",
-    icon: "🛠️",
     items: ["Git", "Docker", "Pandas", "NumPy", "Jupyter", "PostgreSQL", "Kubernetes", "AWS", "GCP"],
   },
 ];
 
 const timeline = [
   {
-    year: "2024–Present",
+    year: "2024 — Present",
     title: "MS Applied Statistics & Data Science",
     org: "UCLA",
-    detail: "Focus on AI/ML",
+    detail: "Focus on AI/ML · thesis on large language models",
     route: "/education/ucla",
-    accentColor: "#2774AE",
   },
   {
-    year: "2020–2024",
+    year: "2020 — 2024",
     title: "BS Math-Computer Science",
     org: "UC San Diego",
-    detail: "minor in Data Science, minor Business-Economics",
+    detail: "Minors in Data Science and Business-Economics",
     route: "/education/ucsd",
-    accentColor: "#006A96",
   },
 ];
 
 const AboutMe = () => {
-  const { isDark } = useTheme();
   const navigate = useNavigate();
-  const [hoveredIdx, setHoveredIdx] = useState(null);
+
   return (
     <div
-      className="w-full py-28 px-6"
-      style={{ background: "var(--bg-secondary)", transition: "background 0.3s ease" }}
+      className="section"
+      style={{ background: "var(--bg-secondary)", transition: "background 0.25s ease" }}
     >
-      <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <FadeIn>
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span
-              className="w-8 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, #3b82f6)" }}
-            />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400">
-              Get to know me
-            </span>
-            <span
-              className="w-8 h-px"
-              style={{ background: "linear-gradient(90deg, #3b82f6, transparent)" }}
-            />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-            About Me
-          </h2>
-          <div
-            className="mt-4 mx-auto h-1 w-16 rounded-full"
-            style={{ background: "linear-gradient(90deg, #3b82f6, #6366f1)" }}
-          />
-        </div>
-        </FadeIn>
+      <div className="shell">
+        <SectionHeader
+          index="01"
+          eyebrow="About"
+          title="A builder's background"
+          description="Statistics, software, and the long-running argument between the two. Here is where I studied, what I work with, and the sentence I keep coming back to."
+        />
 
-        {/* Profile card + bio */}
-        <FadeIn delay={100} className="flex flex-col lg:flex-row gap-12 mb-20">
-          {/* Profile */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-6">
-            <div className="relative">
-              <div
-                className="absolute inset-0 rounded-full blur-xl opacity-50 scale-110"
-                style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}
-              />
+        {/* ── Portrait + bio ── */}
+        <FadeIn delay={80}>
+          <div className="about-grid" style={{ marginTop: "clamp(48px, 6vw, 80px)" }}>
+            {/* Rail */}
+            <div>
               <img
                 src={pfp}
-                alt="Justin Huang"
-                className="relative w-44 h-44 rounded-full object-cover"
+                alt="Portrait of Justin Huang"
                 style={{
-                  border: "2px solid rgba(96,165,250,0.4)",
-                  boxShadow: "0 0 40px rgba(99,102,241,0.25)",
+                  width: "100%",
+                  maxWidth: 320,
+                  aspectRatio: "1 / 1",
+                  objectFit: "cover",
+                  borderRadius: "var(--radius)",
+                  border: "1px solid var(--border-subtle)",
+                  display: "block",
+                  filter: "saturate(0.92)",
                 }}
               />
-            </div>
-            <div className="text-center">
-              <p className="font-bold text-white text-lg">Justin Huang</p>
-              <p className="text-blue-400 text-sm font-medium mt-0.5">MS Student · UCLA</p>
-            </div>
-          </div>
 
-          {/* Bio */}
-          <div className="flex-1 flex flex-col gap-6">
-            {/* Typing speech bubble */}
-            <div
-              className="rounded-2xl px-6 py-5"
-              style={{
-                background: "var(--bg-card)",
-                border: "1px solid var(--border-subtle)",
-              }}
-            >
-              <TypeAnimation
-                sequence={[
-                  "Hello, my name is Justin.", 1400,
-                  "I'm a master's student at UCLA.", 1400,
-                  "I studied CS at UCSD.", 1400,
-                  "I enjoy full stack development and machine learning.", 1400,
-                ]}
-                wrapper="p"
-                speed={55}
-                repeat={Infinity}
-                className="text-xl md:text-2xl font-semibold text-white"
-              />
+              <dl style={{ marginTop: 24 }}>
+                {[
+                  ["Name", "Justin Huang"],
+                  ["Based in", "Los Angeles, CA"],
+                  ["Now", "MS student, UCLA"],
+                  ["Focus", "ML & automation"],
+                ].map(([k, v]) => (
+                  <div
+                    key={k}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 16,
+                      padding: "9px 0",
+                      borderBottom: "1px solid var(--border-subtle)",
+                    }}
+                  >
+                    <dt className="label">{k}</dt>
+                    <dd style={{ margin: 0, fontSize: "0.9rem", color: "var(--text-primary)" }}>{v}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            {/* Paragraphs */}
-            <div className="space-y-4 text-gray-400 text-base leading-relaxed">
-              <p>
-                I'm a graduate student at UCLA pursuing a Master's in Applied Statistics and
-                Data Science, I did my undergrad at UCSD studying Computer Science, I am currently
-                working on my thesis on Large Language Models.
-              </p>
-              <p>
-                My work in past projects and internships have been in regards to building scalable workflows for automation to help with reducing the time
-                for manual work. Manual work has problems of being error-prone, fatigue, time consuming and inefficient, especially when done in largue quanities.
-                Use of new technology such as AI when done correctly can mitigate that and allow people to focus on more creative and high level work. 
-              </p>
-              <blockquote
-                className="text-gray-500 italic text-sm leading-relaxed pl-4"
-                style={{ borderLeft: "2px solid rgba(99,102,241,0.5)" }}
+            {/* Bio */}
+            <div style={{ maxWidth: 620 }}>
+              <p
+                className="serif"
+                style={{
+                  fontSize: "clamp(1.4rem, 2.4vw, 1.95rem)",
+                  lineHeight: 1.28,
+                  color: "var(--text-primary)",
+                  margin: 0,
+                  marginBottom: 32,
+                }}
               >
-                I believe data is another way to tell stories. 
-              </blockquote>
+                Hello, my name is Justin. I'm a master's student at UCLA, a computer
+                science graduate of UC San Diego, and someone who thinks data is
+                another way to tell stories.
+              </p>
+
+              <div className="body-text" style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <p style={{ margin: 0 }}>
+                  I'm pursuing a Master's in Applied Statistics and Data Science, and I'm
+                  currently working on my thesis on large language models. Before that I
+                  studied Computer Science at UCSD, with minors in data science and
+                  business-economics.
+                </p>
+                <p style={{ margin: 0 }}>
+                  My projects and internships have centered on building scalable
+                  workflows that remove manual work. Manual work is error-prone, tiring,
+                  and slow, especially at volume. Used carefully, new technology can
+                  absorb that load so people can spend their time on higher-level,
+                  more creative problems.
+                </p>
+              </div>
+
+              <p
+                className="label"
+                style={{ marginTop: 36, paddingTop: 16, borderTop: "1px solid var(--border-subtle)" }}
+              >
+                Currently — building automation for analytics, writing about it, and
+                making small games in the browser.
+              </p>
             </div>
           </div>
         </FadeIn>
 
-        {/* Timeline */}
-        <div className="mb-20">
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">Education</h3>
-          <div className="relative flex flex-col gap-6 max-w-3xl mx-auto">
-            {/* Vertical line */}
+        {/* ── Education ── */}
+        <div style={{ marginTop: "clamp(64px, 8vw, 110px)" }}>
+          <FadeIn>
             <div
-              className="absolute left-[19px] top-4 bottom-4 w-px hidden md:block"
-              style={{ background: "linear-gradient(to bottom, #3b82f6, #6366f1, transparent)" }}
-            />
-            {timeline.map(({ year, title, org, detail, route, accentColor }, i) => {
-              const hov = hoveredIdx === i;
-              return (
-                <FadeIn key={title} delay={i * 100} className="flex gap-6 items-start">
-                  {/* Node dot */}
-                  <div
-                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300"
-                    style={{
-                      background: hov
-                        ? `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`
-                        : "linear-gradient(135deg, #3b82f6, #6366f1)",
-                      boxShadow: hov
-                        ? `0 0 24px ${accentColor}70`
-                        : "0 0 16px rgba(99,102,241,0.4)",
-                      color: "#fff",
-                      transform: hov ? "scale(1.15)" : "scale(1)",
-                    }}
-                  >●</div>
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 24,
+                borderTop: "1px solid var(--border-strong)",
+                paddingTop: 14,
+              }}
+            >
+              <h3 className="label" style={{ color: "var(--text-primary)" }}>Education</h3>
+              <span className="label">02</span>
+            </div>
+          </FadeIn>
 
-                  {/* Card */}
-                  <div
-                    className="flex-1 rounded-2xl px-6 py-4 cursor-pointer"
-                    onClick={() => navigate(route)}
-                    onMouseEnter={() => setHoveredIdx(i)}
-                    onMouseLeave={() => setHoveredIdx(null)}
-                    style={{
-                      background: hov ? `${accentColor}0e` : "rgba(255,255,255,0.03)",
-                      border: `1px solid ${hov ? accentColor + "55" : "rgba(255,255,255,0.07)"}`,
-                      boxShadow: hov ? `0 8px 40px ${accentColor}20` : "none",
-                      transform: hov ? "translateY(-2px) scale(1.005)" : "none",
-                      transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
-                    }}
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                      <span className="font-bold" style={{ color: "var(--text-primary)" }}>{title}</span>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="text-xs font-semibold px-3 py-1 rounded-full"
-                          style={{
-                            background: hov ? `${accentColor}22` : "rgba(99,102,241,0.15)",
-                            color: hov ? accentColor : "#818cf8",
-                            border: `1px solid ${hov ? accentColor + "45" : "rgba(99,102,241,0.2)"}`,
-                            transition: "all 0.2s",
-                          }}
-                        >{year}</span>
-                      </div>
-                    </div>
-                    <p className="text-sm font-medium mb-1" style={{ color: hov ? accentColor : "#60a5fa" }}>{org}</p>
-                    <p className="text-gray-500 text-sm mb-2">{detail}</p>
-
-                    {/* Explore pill */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", gap: 5,
-                        background: `${accentColor}18`, border: `1px solid ${accentColor}40`,
-                        color: accentColor, fontSize: 11, fontWeight: 700,
-                        padding: "4px 12px", borderRadius: 100,
-                      }}>
-                        Explore →
-                      </span>
-                    </div>
-                  </div>
-                </FadeIn>
-              );
-            })}
+          <div className="hairline-list" style={{ marginTop: 20 }}>
+            {timeline.map(({ year, title, org, detail, route }, i) => (
+              <FadeIn key={title} delay={i * 80}>
+                <button
+                  onClick={() => navigate(route)}
+                  className="edu-row"
+                  aria-label={`Open ${org} page`}
+                >
+                  <span className="label edu-row__year">{year}</span>
+                  <span className="edu-row__main">
+                    <span
+                      style={{
+                        display: "block",
+                        fontSize: "1.0625rem",
+                        fontWeight: 600,
+                        letterSpacing: "-0.02em",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      {title}
+                    </span>
+                    <span className="label" style={{ display: "block", marginTop: 6, textTransform: "none", letterSpacing: "0.04em", fontSize: 12 }}>
+                      {org}
+                    </span>
+                  </span>
+                  <span className="edu-row__detail body-text" style={{ fontSize: "0.9375rem" }}>
+                    {detail}
+                  </span>
+                  <span className="link-arrow edu-row__cta" style={{ fontSize: "0.875rem" }}>
+                    Explore
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </button>
+              </FadeIn>
+            ))}
           </div>
         </div>
 
-        {/* Skills */}
-        <div>
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">Technical Skills</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {skills.map(({ category, icon, items }, i) => (
-              <FadeIn key={category} delay={i * 100}>
-              <div
-                className="rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02]"
-                style={{
-                  background: "var(--bg-card)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="text-2xl">{icon}</span>
-                  <h4
-                    className="text-xs font-semibold uppercase tracking-widest"
-                    style={{ color: isDark ? "#60a5fa" : "#1d4ed8" }}
-                  >
+        {/* ── Skills ── */}
+        <div style={{ marginTop: "clamp(64px, 8vw, 110px)" }}>
+          <FadeIn>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 24,
+                borderTop: "1px solid var(--border-strong)",
+                paddingTop: 14,
+              }}
+            >
+              <h3 className="label" style={{ color: "var(--text-primary)" }}>Technical toolkit</h3>
+              <span className="label">03</span>
+            </div>
+          </FadeIn>
+
+          <div className="skills-grid">
+            {skills.map(({ category, items }, i) => (
+              <FadeIn key={category} delay={i * 80}>
+                <div>
+                  <h4 className="display-md" style={{ fontSize: "1.25rem", marginBottom: 18 }}>
                     {category}
                   </h4>
+                  <ul className="hairline-list" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        style={{
+                          padding: "10px 0",
+                          fontFamily: "var(--font-mono)",
+                          fontSize: 13,
+                          letterSpacing: "0.02em",
+                          color: "var(--text-secondary)",
+                        }}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {items.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 text-sm rounded-full font-medium"
-                      style={{
-                        background: isDark ? "rgba(59,130,246,0.08)" : "rgba(29,78,216,0.08)",
-                        border: isDark ? "1px solid rgba(59,130,246,0.2)" : "1px solid rgba(29,78,216,0.25)",
-                        color: isDark ? "#93c5fd" : "#1d4ed8",
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
               </FadeIn>
             ))}
           </div>

@@ -19,11 +19,11 @@ const articles = [
     tags: ["Thoughts", "Life", "Psychology", "Society"],
     banner: "https://static0.moviewebimages.com/wordpress/wp-content/uploads/2022/09/Fight-Club.jpg?q=50&fit=crop&w=825&dpr=1.5",
     excerpt:
-      "The teenager walking to school wishes he had a bike. The guy on the bike wishes he had a car. The millionaire in the sports car wishes he could be young again. Nobody ever arrives. Here is why more never feels like enough, and what to do about it.",
+      "The teenager walking to school wishes he had a bike. The guy on the bike wishes he had a car. The 40 year old millionaire in the sports car looks at the teenager walking to school and says \"I wish I could be young again\"",
     content: [
     {
       type: "p",
-      text: "I was a big sneakerhead in high school. Every few months a new Jordan colorway would drop and I would convince myself that this pair would finally feel like enough. It never did. The box would open, the shoes would hit the shelf, and within a week I was already looking at the next release. I knew it was happening. I just did not know how to stop it.",
+      text: "I was a big sneakerhead in high school. Every few months a new Jordan colorway would drop and I would convince myself that this pair would finally feel like enough to bring me satisfaction. It never did. The box would open, the shoes would hit the shelf, and within a week I was already looking at the next release.",
     },
     {
       type: "image",
@@ -34,10 +34,6 @@ const articles = [
     {
       type: "p",
       text: "There is a name for this. Hedonic adaptation. We calibrate to whatever we have, and then want more. A raise feels like a windfall for a month, then it becomes the new normal. A dream apartment feels like a luxury until it is just where you live. The things we chase so hard disappear the moment we catch them.",
-    },
-    {
-      type: "p",
-      text: "I understood this intellectually long before I felt it.",
     },
     {
       type: "h2",
@@ -53,17 +49,13 @@ const articles = [
     },
     {
       type: "p",
-      text: "I could not have been more wrong.",
-    },
-    {
-      type: "p",
-      text: "What I found was that the discipline itself was the thing I needed. Not the destination. Showing up every day, doing something hard and doing it again the next morning, that was what kept everything else in order. The moment I tried to quit was the moment things started slipping. Not just physically, but everywhere.",
+      text: "I was wrong. What I found was that the discipline itself was the thing I needed. Not the destination. Showing up every day, doing something hard and doing it again the next morning, that was what kept everything else in order. The moment I tried to quit was the moment things started slipping. Not just physically, but everywhere.",
     },
     {
       type: "image",
       src: "https://i.ytimg.com/vi/Oqw32w49KD0/sddefault.jpg",
       alt: "The rock working out",
-      caption: "Discipline is the key to change",
+      caption: "Raise the bar",
     },
     {
       type: "p",
@@ -79,7 +71,7 @@ const articles = [
     },
     {
       type: "p",
-      text: "Some people live off the hope factor. They hope that life will feel complete once they get the promotion. Once they get into the right school. Once they buy the house. It is naive to think the perfect life is waiting behind some milestone. The joy comes from the pursuit. The beauty is in the struggle.",
+      text: "Some people live off of hope, where things will eventually get better enough where there is no suffering. They hope that life will feel complete once they get the promotion. Once they get into the right school. Once they buy the house. It is naive to think the perfect life is waiting behind some milestone. The joy comes from the pursuit. The beauty is in the struggle.",
     },
     {
       type: "h2",
