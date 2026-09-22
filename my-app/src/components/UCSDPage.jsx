@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FadeIn from "./FadeIn";
 import NavBar from "./navbar";
+import BlurText from "./reactbits/BlurText";
+import CountUp from "./reactbits/CountUp";
 
 import ucsdImg from "../imgs/ucsdIMG.png";
 
@@ -58,24 +60,12 @@ const MINORS = [
   { name: "Business Economics", desc: "Microeconomic theory, game theory, corporate finance fundamentals, and quantitative business strategy." },
 ];
 
-function useCounter(target, delay = 0) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    const t = setTimeout(() => {
-      let n = 0;
-      const steps = 50;
-      const inc = target / steps;
-      const id = setInterval(() => {
-        n += inc;
-        if (n >= target) { setVal(target); clearInterval(id); }
-        else setVal(Math.floor(n));
-      }, 1000 / steps);
-      return () => clearInterval(id);
-    }, delay);
-    return () => clearTimeout(t);
-  }, [target, delay]);
-  return val;
-}
+const STATS = [
+  { label: "Courses", count: 13, suffix: "+" },
+  { label: "Minors", value: "2" },
+  { label: "Graduated", count: 2024, from: 2018, duration: 2 },
+  { label: "Location", value: "La Jolla" },
+];
 
 const CourseCard = ({ course, accent }) => (
   <div className="card card-hover" style={{ padding: "18px 20px" }}>
@@ -104,7 +94,6 @@ const CourseCard = ({ course, accent }) => (
 
 export default function UCSDPage() {
   const navigate = useNavigate();
-  const courses = useCounter(13, 300);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -135,10 +124,20 @@ export default function UCSDPage() {
 
           <p className="label" style={{ marginTop: 44 }}>Education / University of California, San Diego</p>
 
-          <h1 className="display-xl" style={{ marginTop: 20, maxWidth: 900 }}>
-            Bachelor of Science in{" "}
-            <span className="serif" style={{ fontStyle: "italic" }}>Math-Computer Science</span>
-          </h1>
+          <BlurText
+            tag="h1"
+            className="display-xl"
+            style={{ marginTop: 20, maxWidth: 900 }}
+            delay={45}
+            segments={[
+              { text: "Bachelor of Science in" },
+              {
+                text: "Math-Computer Science",
+                className: "serif",
+                style: { fontStyle: "italic" },
+              },
+            ]}
+          />
 
           <p className="lead muted" style={{ marginTop: 24, maxWidth: 620 }}>
             Minors in Data Science and Business-Economics — where algorithms,
@@ -148,16 +147,18 @@ export default function UCSDPage() {
           <p className="meta" style={{ marginTop: 18 }}>2020 — 2024 · La Jolla, California</p>
 
           <dl className="edu-stats">
-            {[
-              ["Courses", `${courses}+`],
-              ["Minors", "2"],
-              ["Graduated", "2024"],
-              ["Location", "La Jolla"],
-            ].map(([label, value]) => (
+            {STATS.map(({ label, count, from, suffix, duration, value }) => (
               <div key={label}>
                 <dt className="label">{label}</dt>
                 <dd style={{ margin: "8px 0 0", fontSize: "1.35rem", fontWeight: 500, letterSpacing: "-0.03em" }}>
-                  {value}
+                  {count !== undefined ? (
+                    <>
+                      <CountUp to={count} from={from ?? 0} duration={duration ?? 1.6} />
+                      {suffix}
+                    </>
+                  ) : (
+                    value
+                  )}
                 </dd>
               </div>
             ))}

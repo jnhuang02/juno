@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FadeIn from "./FadeIn";
 import NavBar from "./navbar";
+import BlurText from "./reactbits/BlurText";
+import CountUp from "./reactbits/CountUp";
 
 import uclaImg from "../imgs/uclaIMG.jpg";
 
@@ -57,24 +59,12 @@ const ACTIVITIES = [
   },
 ];
 
-function useCounter(target, delay = 0) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    const t = setTimeout(() => {
-      let n = 0;
-      const steps = 50;
-      const inc = target / steps;
-      const id = setInterval(() => {
-        n += inc;
-        if (n >= target) { setVal(target); clearInterval(id); }
-        else setVal(Math.floor(n));
-      }, 1000 / steps);
-      return () => clearInterval(id);
-    }, delay);
-    return () => clearTimeout(t);
-  }, [target, delay]);
-  return val;
-}
+const STATS = [
+  { label: "Courses", count: 10, suffix: "+" },
+  { label: "Graduation", count: 2026, from: 2020, duration: 2 },
+  { label: "Focus", value: "LLMs & ML" },
+  { label: "Location", value: "Los Angeles" },
+];
 
 const CourseCard = ({ course, accent }) => (
   <div className="card card-hover" style={{ padding: "18px 20px" }}>
@@ -106,8 +96,6 @@ const CourseCard = ({ course, accent }) => (
 
 export default function UCLAPage() {
   const navigate = useNavigate();
-  const courses = useCounter(10, 300);
-  const graduationYear = useCounter(2026, 450);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -138,11 +126,21 @@ export default function UCLAPage() {
 
           <p className="label" style={{ marginTop: 44 }}>Education / University of California, Los Angeles</p>
 
-          <h1 className="display-xl" style={{ marginTop: 20, maxWidth: 900 }}>
-            Master of Science in{" "}
-            <span className="serif" style={{ fontStyle: "italic" }}>Applied Statistics</span>{" "}
-            &amp; Data Science
-          </h1>
+          <BlurText
+            tag="h1"
+            className="display-xl"
+            style={{ marginTop: 20, maxWidth: 900 }}
+            delay={45}
+            segments={[
+              { text: "Master of Science in" },
+              {
+                text: "Applied Statistics",
+                className: "serif",
+                style: { fontStyle: "italic" },
+              },
+              { text: "& Data Science" },
+            ]}
+          />
 
           <p className="lead muted" style={{ marginTop: 24, maxWidth: 620 }}>
             Deepening my work in statistical theory and modern machine learning, with a
@@ -152,16 +150,18 @@ export default function UCLAPage() {
           <p className="meta" style={{ marginTop: 18 }}>2024 — Present · Los Angeles, California</p>
 
           <dl className="edu-stats">
-            {[
-              ["Courses", `${courses}+`],
-              ["Graduation", graduationYear],
-              ["Focus", "LLMs & ML"],
-              ["Location", "Los Angeles"],
-            ].map(([label, value]) => (
+            {STATS.map(({ label, count, from, suffix, duration, value }) => (
               <div key={label}>
                 <dt className="label">{label}</dt>
                 <dd style={{ margin: "8px 0 0", fontSize: "1.35rem", fontWeight: 500, letterSpacing: "-0.03em" }}>
-                  {value}
+                  {count !== undefined ? (
+                    <>
+                      <CountUp to={count} from={from ?? 0} duration={duration ?? 1.6} />
+                      {suffix}
+                    </>
+                  ) : (
+                    value
+                  )}
                 </dd>
               </div>
             ))}

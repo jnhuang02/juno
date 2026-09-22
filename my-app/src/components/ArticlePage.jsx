@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import articles from "../data/articles";
 import NavBar from "./navbar";
+import BlurText from "./reactbits/BlurText";
 
 /* ── Full-width image with a caption set beneath it ───────────────── */
 const ImageBlock = ({ src, alt, caption }) => (
@@ -50,6 +51,22 @@ const Block = ({ block }) => {
       >
         <RichText content={block.text} />
       </h2>
+    );
+  }
+
+  if (block.type === "h3") {
+    return (
+      <h3
+        style={{
+          margin: "16px 0 0",
+          fontSize: "clamp(1.1rem, 1.7vw, 1.35rem)",
+          fontWeight: 600,
+          letterSpacing: "-0.02em",
+          color: "var(--text-primary)",
+        }}
+      >
+        <RichText content={block.text} />
+      </h3>
     );
   }
 
@@ -188,9 +205,14 @@ const ArticlePage = () => {
           ))}
         </div>
 
-        <h1 className="display-lg" style={{ marginTop: 22 }}>
-          {article.title}
-        </h1>
+        <BlurText
+          tag="h1"
+          className="display-lg"
+          style={{ marginTop: 22 }}
+          text={article.title}
+          delay={30}
+          startDelay={0.1}
+        />
 
         <div
           style={{

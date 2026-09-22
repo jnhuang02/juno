@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
+import SpotlightCard from "./reactbits/SpotlightCard";
 
 const ProjectCard = ({ index, slug, title, description, image, tags = [], role, timeline }) => (
-  <Link to={`/project/${slug}`} className="project-card" style={{ textDecoration: "none" }}>
+  <SpotlightCard
+    as={Link}
+    to={`/project/${slug}`}
+    className="project-card"
+    style={{ textDecoration: "none" }}
+  >
     <div className="project-card__media">
       <img src={image} alt="" loading="lazy" />
     </div>
@@ -47,7 +53,7 @@ const ProjectCard = ({ index, slug, title, description, image, tags = [], role, 
         </svg>
       </span>
     </div>
-  </Link>
+  </SpotlightCard>
 );
 
 export default ProjectCard;

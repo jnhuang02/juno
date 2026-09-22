@@ -1,4 +1,5 @@
 import FadeIn from "./FadeIn";
+import BlurText from "./reactbits/BlurText";
 
 /**
  * Editorial section header in the style of the reference sites:
@@ -13,7 +14,7 @@ const SectionHeader = ({ index, eyebrow, title, description, id }) => (
         {eyebrow}
       </p>
       <div className="section-head__grid">
-        <h2 className="display-lg">{title}</h2>
+        <BlurText tag="h2" className="display-lg" text={title} delay={45} />
         {description ? <p className="section-head__desc">{description}</p> : null}
       </div>
     </header>

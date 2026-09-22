@@ -1,4 +1,5 @@
 import FadeIn from "./FadeIn";
+import Magnet from "./reactbits/Magnet";
 
 const contacts = [
   {
@@ -82,9 +83,11 @@ const ContactMe = () => (
           </div>
 
           <div className="contact-cta">
-            <a href="mailto:huangjustinn@gmail.com" className="btn btn-primary btn-mono">
-              Send a message
-            </a>
+            <Magnet padding={70} magnetStrength={12}>
+              <a href="mailto:huangjustinn@gmail.com" className="btn btn-primary btn-mono">
+                Send a message
+              </a>
+            </Magnet>
             <a
               href="mailto:huangjustinn@gmail.com?subject=Quick%20question"
               className="link-arrow"

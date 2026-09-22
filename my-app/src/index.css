@@ -599,6 +599,32 @@ h1, h2, h3, h4, h5 {
   border-radius: 99px;
 }
 
+/* Animated grid backdrop behind the hero. Masked so it dissolves before it
+   reaches the text and fades into the next section. */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(
+    112% 76% at 70% 6%,
+    #000 0%,
+    rgba(0, 0, 0, 0.55) 34%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    112% 76% at 70% 6%,
+    #000 0%,
+    rgba(0, 0, 0, 0.55) 34%,
+    transparent 72%
+  );
+}
+
+/* Let the canvas pick up pointer movement for the hover highlight; clicks
+   still land on the hero content because that sits above it. */
+.hero-bg canvas {
+  pointer-events: auto;
+}
+
 /* ============================================================
    About
    ============================================================ */

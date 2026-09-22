@@ -4,6 +4,12 @@ import UnethicalHoops from "./UnethicalHoops";
 import WorldSeriesGame from "./WorldSeriesGame";
 import OldFaithful from "./OldFaithful";
 import { TypeAnimation } from "react-type-animation";
+import BlurText from "./reactbits/BlurText";
+import CountUp from "./reactbits/CountUp";
+import Magnet from "./reactbits/Magnet";
+import ShapeGrid from "./reactbits/ShapeGrid";
+import { useReducedMotion } from "motion/react";
+import { useTheme } from "../ThemeContext";
 
 const GAMES = [
   { id: "rocket",      label: "Bust down the ap" },
@@ -13,8 +19,8 @@ const GAMES = [
 ];
 
 const STATS = [
-  { value: "3+", label: "Years writing code" },
-  { value: "10+", label: "Projects shipped" },
+  { count: { to: 3, suffix: "+" }, label: "Years writing code" },
+  { count: { to: 10, suffix: "+" }, label: "Projects shipped" },
   { value: "UCLA", label: "MS Applied Stats" },
 ];
 
@@ -48,31 +54,56 @@ const Home = () => {
   const [gameIdx, setGameIdx] = useState(0);
   const prev = () => setGameIdx((i) => (i - 1 + GAMES.length) % GAMES.length);
   const next = () => setGameIdx((i) => (i + 1) % GAMES.length);
+  const { isDark } = useTheme();
+  const prefersReduced = useReducedMotion();
 
   return (
     <div
       style={{
+        position: "relative",
+        overflow: "hidden",
         background: "var(--bg-primary)",
         paddingTop: 140,
         paddingBottom: "var(--section-y)",
         transition: "background 0.25s ease",
       }}
     >
-      <div className="shell">
+      {/* ── Animated grid backdrop ── */}
+      <div className="hero-bg" aria-hidden="true">
+        <ShapeGrid
+          shape="square"
+          direction="diagonal"
+          speed={0.35}
+          squareSize={64}
+          borderColor={isDark ? "rgba(245, 240, 237, 0.026)" : "rgba(17, 16, 14, 0.045)"}
+          hoverFillColor={isDark ? "rgba(204, 235, 212, 0.055)" : "rgba(103, 166, 113, 0.07)"}
+          hoverTrailAmount={5}
+          animated={!prefersReduced}
+        />
+      </div>
+
+      <div className="shell" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           {/* ── Statement ── */}
           <div>
             <p className="label">Portfolio — Los Angeles, CA</p>
 
-            <h1 className="display-xl" style={{ marginTop: 26 }}>
-              Justin Huang builds
-              <span className="serif" style={{ fontStyle: "italic" }}>
-                {" "}
-                software and stories
-              </span>
-              {" "}
-              from messy data.
-            </h1>
+            <BlurText
+              tag="h1"
+              className="display-xl"
+              style={{ marginTop: 26 }}
+              delay={55}
+              startDelay={0.15}
+              segments={[
+                { text: "Justin Huang builds" },
+                {
+                  text: "software and stories",
+                  className: "serif",
+                  style: { fontStyle: "italic" },
+                },
+                { text: "from messy data." },
+              ]}
+            />
 
             <p className="lead" style={{ marginTop: 28, maxWidth: 560 }}>
               A statistics graduate student at UCLA and a computer science graduate of
@@ -99,12 +130,14 @@ const Home = () => {
             </p>
 
             <div style={{ display: "flex", gap: 12, marginTop: 34, flexWrap: "wrap" }}>
-              <a
-                href="mailto:huangjustinn@gmail.com"
-                className="btn btn-primary btn-mono"
-              >
-                Get in touch
-              </a>
+              <Magnet padding={70} magnetStrength={12}>
+                <a
+                  href="mailto:huangjustinn@gmail.com"
+                  className="btn btn-primary btn-mono"
+                >
+                  Get in touch
+                </a>
+              </Magnet>
               <button
                 onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
                 className="btn btn-outline btn-mono"
@@ -115,7 +148,7 @@ const Home = () => {
 
             {/* Stats — hairline divided, MLCommons data-row feel */}
             <dl className="hero-stats">
-              {STATS.map(({ value, label }) => (
+              {STATS.map(({ value, count, label }) => (
                 <div key={label}>
                   <dt
                     style={{
@@ -125,7 +158,14 @@ const Home = () => {
                       color: "var(--text-primary)",
                     }}
                   >
-                    {value}
+                    {count ? (
+                      <>
+                        <CountUp to={count.to} duration={1.4} />
+                        {count.suffix}
+                      </>
+                    ) : (
+                      value
+                    )}
                   </dt>
                   <dd className="label" style={{ margin: "6px 0 0" }}>{label}</dd>
                 </div>

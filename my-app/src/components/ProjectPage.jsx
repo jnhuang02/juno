@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import projects from "../data/projects";
 import NavBar from "./navbar";
+import Magnet from "./reactbits/Magnet";
 
 /* ── Full-width image with a caption set beneath it ───────────────── */
 const ImageBlock = ({ src, alt, caption }) => (
@@ -50,6 +51,22 @@ const Block = ({ block }) => {
       >
         <RichText content={block.text} />
       </h2>
+    );
+  }
+
+  if (block.type === "h3") {
+    return (
+      <h3
+        style={{
+          margin: "16px 0 0",
+          fontSize: "clamp(1.1rem, 1.7vw, 1.35rem)",
+          fontWeight: 600,
+          letterSpacing: "-0.02em",
+          color: "var(--text-primary)",
+        }}
+      >
+        <RichText content={block.text} />
+      </h3>
     );
   }
 
@@ -180,9 +197,11 @@ const ProjectPage = () => {
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 32 }}>
               {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-mono">
-                  View live project
-                </a>
+                <Magnet padding={70} magnetStrength={12}>
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-mono">
+                    View live project
+                  </a>
+                </Magnet>
               )}
               {project.repo && project.repo !== project.link && (
                 <a href={project.repo} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-mono">
