@@ -155,7 +155,7 @@ const ArticlePage = () => {
           <p className="label">404</p>
           <h1 className="display-lg" style={{ marginTop: 18 }}>Article not found</h1>
           <p className="lead" style={{ marginTop: 16 }}>
-            That essay does not exist — it may have been renamed.
+            That essay does not exist. It may have been renamed.
           </p>
           <button onClick={goBack} className="btn btn-outline btn-mono" style={{ marginTop: 28 }}>
             Back to portfolio
@@ -227,8 +227,7 @@ const ArticlePage = () => {
           <span className="meta">{article.date}</span>
           <span className="meta">·</span>
           <span className="meta">{article.readTime}</span>
-          <span className="meta">·</span>
-          <span className="meta" style={{ color: "var(--accent-alt)" }}>
+          <span className="meta" style={{ marginLeft: 8, color: "var(--accent-alt)" }}>
             {Math.round(readProgress)}% read
           </span>
         </div>

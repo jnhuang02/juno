@@ -5,7 +5,7 @@ import SectionHeader from "./SectionHeader";
 import articles from "../data/articles";
 
 const ArticleRow = ({ article, index }) => (
-  <Link to={`/article/${article.slug}`} className="writing-row" style={{ textDecoration: "none" }}>
+  <Link to={`/article/${article.slug}`} className="writing-row hover-invert" style={{ textDecoration: "none" }}>
     {/* Rail: index + date + read time */}
     <div className="writing-row__rail">
       <span className="label">{String(index + 1).padStart(2, "0")}</span>
@@ -59,8 +59,6 @@ const FeaturedWriting = () => {
     <div className="section" style={{ background: "var(--bg-secondary)", transition: "background 0.25s ease" }}>
       <div className="shell">
         <SectionHeader
-          index="03"
-          eyebrow="Writing"
           title="Notes & essays"
           description="Personal essays and reflections on data, software, and whatever else is on my mind."
         />

@@ -147,7 +147,7 @@ export default function UCLAPage() {
             focus on LLM evaluation and reliable AI systems.
           </p>
 
-          <p className="meta" style={{ marginTop: 18 }}>2024 — Present · Los Angeles, California</p>
+          <p className="meta" style={{ marginTop: 18 }}>2024 - Present, Los Angeles, California</p>
 
           <dl className="edu-stats">
             {STATS.map(({ label, count, from, suffix, duration, value }) => (
@@ -196,7 +196,7 @@ export default function UCLAPage() {
             <p className="edu-lede">
               At UCLA I am deepening my expertise in rigorous statistical theory and modern
               machine learning. My graduate work focuses on LLM evaluation, machine learning
-              research, and developing reliable AI systems — turning mathematical
+              research, and developing reliable AI systems, turning mathematical
               foundations into working solutions.
             </p>
           </section>

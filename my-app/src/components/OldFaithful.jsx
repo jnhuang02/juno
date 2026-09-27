@@ -502,7 +502,7 @@ export default function OldFaithful() {
           Old Faithful 🏎️
         </h1>
         <p style={{ color: "#9ca3af", fontFamily: "monospace", fontSize: 12, margin: 0 }}>
-          Race around Levi's Stadium, dodge lights, cops &amp; contract extensions
+          Dodge traffic, cops and contract extensions at Levi's Stadium
         </p>
       </div>
       <div style={{ position: "relative", display: "inline-block" }}>

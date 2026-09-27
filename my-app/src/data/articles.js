@@ -20,7 +20,7 @@ const articles = [
     readTime: "4 min read",
     tags: ["AI", "LLMs", "Research", "Hardware"],
     excerpt:
-      "Frontier models need terabytes of memory; consumer devices offer 128 gigabytes. Closing that 40-fold gap is not a hardware problem to wait out — it is an algorithmic one, and the timeline to edge viability is already compressing by nearly a decade.",
+      "Frontier models need terabytes of memory; consumer devices offer 128 gigabytes. Closing that 40-fold gap is not a hardware problem to wait out. It is an algorithmic one, and the timeline to edge viability is already compressing by nearly a decade.",
     content: [
       {
         type: "h2",

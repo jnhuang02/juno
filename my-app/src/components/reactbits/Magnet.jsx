@@ -3,31 +3,37 @@
  * Adapted from React Bits — https://reactbits.dev/animations/magnet
  * (MIT + Commons Clause, DavidHDev/react-bits)
  *
- * Site adaptation: disabled entirely under prefers-reduced-motion.
+ * Site adaptations:
+ *  - Pointer offset rides on motion values rather than React state. Upstream
+ *    calls setState on every mousemove, which re-renders the tree each frame;
+ *    motion values write straight to the element instead.
+ *  - Disabled entirely under prefers-reduced-motion.
  */
-import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
 const Magnet = ({
   children,
   padding = 90,
   disabled = false,
   magnetStrength = 7,
-  activeTransition = "transform 0.25s ease-out",
-  inactiveTransition = "transform 0.45s ease-in-out",
   wrapperClassName = "",
   innerClassName = "",
   ...props
 }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const magnetRef = useRef(null);
   const prefersReduced = useReducedMotion();
   const isDisabled = disabled || prefersReduced;
 
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 260, damping: 24, mass: 0.6 });
+  const springY = useSpring(y, { stiffness: 260, damping: 24, mass: 0.6 });
+
   useEffect(() => {
     if (isDisabled) {
-      setPosition({ x: 0, y: 0 });
+      x.set(0);
+      y.set(0);
       return;
     }
 
@@ -41,22 +47,17 @@ const Magnet = ({
       const distY = Math.abs(centerY - e.clientY);
 
       if (distX < width / 2 + padding && distY < height / 2 + padding) {
-        setIsActive(true);
-        setPosition({
-          x: (e.clientX - centerX) / magnetStrength,
-          y: (e.clientY - centerY) / magnetStrength,
-        });
+        x.set((e.clientX - centerX) / magnetStrength);
+        y.set((e.clientY - centerY) / magnetStrength);
       } else {
-        setIsActive(false);
-        setPosition({ x: 0, y: 0 });
+        x.set(0);
+        y.set(0);
       }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [padding, isDisabled, magnetStrength]);
-
-  const transitionStyle = isActive ? activeTransition : inactiveTransition;
+  }, [padding, isDisabled, magnetStrength, x, y]);
 
   return (
     <div
@@ -65,16 +66,16 @@ const Magnet = ({
       style={{ position: "relative", display: "inline-block" }}
       {...props}
     >
-      <div
+      <motion.div
         className={innerClassName}
         style={{
-          transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-          transition: transitionStyle,
+          x: springX,
+          y: springY,
           willChange: "transform",
         }}
       >
         {children}
-      </div>
+      </motion.div>
     </div>
   );
 };

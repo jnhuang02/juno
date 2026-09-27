@@ -7,8 +7,6 @@ const Projects = () => (
   <div className="section" style={{ background: "var(--bg-primary)", transition: "background 0.25s ease" }}>
     <div className="shell">
       <SectionHeader
-        index="02"
-        eyebrow="Selected work"
         title="Projects & case studies"
         description="Six pieces of work spanning front-end engineering, machine learning, and applied statistics. Each one opens into the full write-up: the problem, what I built, and how it turned out."
       />

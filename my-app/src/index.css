@@ -33,7 +33,7 @@
   --bg-card-alt: rgba(245, 240, 237, 0.016);
   --bg-inverse: #f5f0ed;
   --border-subtle: rgba(245, 240, 237, 0.14);
-  --border-strong: rgba(245, 240, 237, 0.3);
+  --border-strong: rgba(245, 240, 237, 0.42);
   --border-accent: rgba(204, 235, 212, 0.38);
   --text-primary: #f5f0ed;
   --text-secondary: rgba(245, 240, 237, 0.68);
@@ -52,6 +52,23 @@
 
   --nav-bg: rgba(17, 20, 31, 0.86);
   --nav-border: rgba(245, 240, 237, 0.12);
+  /* Navigation accent. Both reds come from the MLCommons palette this
+     system was originally derived from (score-poor / vivid-red). */
+  --nav-accent: #ff5c5c;
+  --nav-accent-fg: #11141f;
+  --nav-accent-soft: rgba(255, 92, 92, 0.16);
+  /* Idle chrome colour, matched to the brand mark's fill. */
+  --nav-idle: #ccebd4;
+  /* Chrome palette consumed by the navigation. Fixed per theme: the nav sits
+     on its own constant surface, so it never changes colour while scrolling. */
+  --chrome-text: var(--text-primary);
+  --chrome-muted: var(--text-muted);
+  --chrome-line: var(--border-subtle);
+  --chrome-line-strong: var(--border-strong);
+  --chrome-accent: var(--nav-accent);
+  --chrome-accent-fg: var(--nav-accent-fg);
+  --chrome-surface: var(--nav-bg);
+  --chrome-idle: var(--nav-idle);
   --selection: rgba(204, 235, 212, 0.28);
 }
 
@@ -64,7 +81,7 @@
   --bg-card-alt: rgba(17, 16, 14, 0.012);
   --bg-inverse: #11141f;
   --border-subtle: rgba(17, 16, 14, 0.16);
-  --border-strong: rgba(17, 16, 14, 0.38);
+  --border-strong: rgba(17, 16, 14, 0.5);
   --border-accent: rgba(17, 16, 14, 0.24);
   --text-primary: #11100e;
   --text-secondary: #4a453f;
@@ -83,6 +100,11 @@
 
   --nav-bg: rgba(245, 240, 237, 0.88);
   --nav-border: rgba(17, 16, 14, 0.14);
+  --nav-accent: #cf2e2e;
+  --nav-accent-fg: #f5f0ed;
+  --nav-accent-soft: rgba(207, 46, 46, 0.12);
+  /* Same hue as the mark, darkened so it stays legible on cream. */
+  --nav-idle: #35705a;
   --selection: rgba(103, 166, 113, 0.22);
 }
 
@@ -106,7 +128,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: `hidden` would make <body> a scroll container,
+     which breaks view() timelines resolving against the real scroller. */
+  overflow-x: clip;
   transition: background 0.25s ease, color 0.25s ease;
 }
 
@@ -118,6 +142,18 @@ body {
 button {
   cursor: pointer;
   font-family: inherit;
+}
+
+/* Focus rings carried by the accent, in the spirit of Linear: the accent is
+   reserved for the brand mark, the primary CTA, and focus. */
+:focus-visible {
+  outline: 2px solid var(--accent-alt);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.band-ink :focus-visible {
+  outline-color: var(--bg-inverse);
 }
 
 a { color: inherit; }
@@ -423,6 +459,382 @@ h1, h2, h3, h4, h5 {
 .perspective { perspective: 1000px; }
 
 /* ============================================================
+   Layout devices borrowed from kikk.be
+   ============================================================ */
+
+/* ── Navigation: wordmark top-left, section rail on the right ──
+   The chrome floats over the page, so it carries its own palette and
+   flips it when an inverted band (the contact section, the education
+   heroes) is behind it. Otherwise cream-on-cream disappears in dark mode. */
+
+.wordmark {
+  position: fixed;
+  top: 22px;
+  left: 24px;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  /* A constant surface, so the chrome keeps one colour over every section. */
+  background: var(--chrome-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--chrome-line);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+}
+
+.wordmark__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: #11141f;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.wordmark__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--chrome-idle);
+  transition: color 0.25s ease;
+}
+
+.rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  padding-right: 12px;
+  pointer-events: none;
+}
+
+.rail__progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+}
+
+.rail__progress > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--nav-accent);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+.rail__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.rail__panel {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--chrome-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--chrome-line);
+  border-radius: var(--radius);
+}
+
+.rail__link {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 0;
+  padding: 2px 0;
+}
+
+.rail__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chrome-idle);
+  transition: color 0.25s ease;
+}
+
+.rail__tick {
+  width: 10px;
+  height: 1px;
+  background: var(--chrome-line-strong);
+  transition: width 0.25s ease, background 0.25s ease;
+}
+
+.rail__link:hover .rail__label,
+.rail__link.is-active .rail__label { color: var(--chrome-text); }
+.rail__link.is-active .rail__label,
+.rail__link.is-active:hover .rail__label { color: var(--chrome-accent); }
+.rail__link:hover .rail__tick { width: 18px; background: var(--chrome-accent); }
+.rail__link.is-active .rail__tick {
+  width: 28px;
+  background: var(--chrome-accent);
+}
+
+.rail__theme {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--chrome-line-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--chrome-muted);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.rail__theme:hover {
+  color: var(--chrome-accent);
+  border-color: var(--chrome-accent);
+}
+
+.mobilebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--chrome-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 2px solid var(--chrome-accent);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.mobilebar .wordmark {
+  position: static;
+  display: inline-flex;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.mobilebar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  padding-inline: var(--gutter);
+}
+
+.mobilebar__drawer {
+  border-top: 1px solid var(--chrome-line);
+  padding: 8px var(--gutter) 12px;
+}
+
+.mobilebar__link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--chrome-line);
+  padding: 14px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chrome-idle);
+}
+
+.mobilebar__link.is-active { color: var(--chrome-accent); }
+
+/* The rail sits in the right margin, so it only appears once the viewport
+   leaves enough room beside the content column. */
+@media (min-width: 1440px) {
+  .wordmark { display: inline-flex; }
+  .rail { display: flex; }
+  .mobilebar { display: none; }
+}
+
+/* ============================================================
+   Section stages (home page)
+   One section fills the viewport at a time. Sections taller than
+   the viewport scroll inside their own panel, so the page-level
+   scroll only ever moves between sections.
+   ============================================================ */
+
+.stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.stage__panel {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: auto;
+  /* The page itself already has a scrollbar; a second one inside every tall
+     section reads as a glitch. Sections still scroll normally, the bar is
+     just not drawn. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stage__panel::-webkit-scrollbar { display: none; }
+
+/* Mandatory snapping is what keeps exactly one section on screen. */
+@media (prefers-reduced-motion: no-preference) {
+  html.snap-on,
+  html.snap-on body {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+/* ── Rack-focus transition ──
+   A section defocuses, dims and shrinks as it loses the viewport, and
+   resolves back to sharp as it takes it over. The resting state is the
+   plain visible one: `is-off` is only ever added by the observer, so if
+   the observer never runs every section simply renders normally. */
+.stage {
+  transition: opacity 0.55s ease, filter 0.6s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage.is-off {
+  /* Deliberately not opacity 0. At rest the inactive sections are off-screen
+     anyway, so the floor never shows during normal use - but it means a
+     section can never be rendered completely blank. */
+  opacity: 0.22;
+  filter: blur(13px) saturate(0.6);
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .stage.is-off {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.snap-on,
+  html.snap-on body { scroll-snap-type: none; }
+}
+
+/* Vertical column guides — 1px rules that reveal the grid the
+   content sits on. Decorative, desktop only, behind content. */
+.grid-line-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Rotated micro-label pinned to a page edge (KIKK's "margin-label"). */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.margin-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Oversized ghost letterform sitting behind a section. */
+.ghost-type {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  opacity: 0.038;
+  pointer-events: none;
+  user-select: none;
+  font-size: clamp(15rem, 40vw, 34rem);
+}
+
+[data-theme="light"] .ghost-type { opacity: 0.05; }
+
+/* Hover inversion — the whole block flips to the opposite surface,
+   with its text following along. */
+.hover-invert {
+  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-invert:hover,
+.hover-invert:focus-visible {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.hover-invert .label,
+.hover-invert .meta,
+.hover-invert .body-text,
+.hover-invert h3,
+.hover-invert p,
+.hover-invert span {
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+/* !important is doing real work here: several of these elements carry their
+   colour as an inline style (e.g. the writing-row title), which would
+   otherwise stay dark-on-dark once the block inverts. */
+.hover-invert:hover .label,
+.hover-invert:hover .meta,
+.hover-invert:hover .body-text,
+.hover-invert:hover h3,
+.hover-invert:hover p,
+.hover-invert:hover span {
+  color: var(--bg-primary) !important;
+}
+
+.hover-invert:hover .tag {
+  border-color: color-mix(in srgb, var(--bg-primary) 35%, transparent);
+  color: var(--bg-primary);
+  background: transparent;
+}
+
+.hover-invert:hover .link-arrow {
+  color: var(--bg-primary);
+  border-bottom-color: var(--bg-primary);
+}
+
+/* ============================================================
    Section header — left-aligned editorial, MLCommons rule on top
    ============================================================ */
 
@@ -432,23 +844,17 @@ h1, h2, h3, h4, h5 {
 }
 
 .section-head__grid {
-  display: grid;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   margin-top: 22px;
-}
-
-@media (min-width: 900px) {
-  .section-head__grid {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: 56px;
-    align-items: end;
-  }
 }
 
 .section-head__desc {
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--text-secondary);
+  max-width: 65ch;
 }
 
 /* Two-column checklist, MLCommons "is-style-checklist-two-col" */
@@ -544,7 +950,8 @@ h1, h2, h3, h4, h5 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  margin: 64px 0 0;
+  margin: clamp(56px, 6vw, 88px) 0 0;
+  padding-bottom: clamp(48px, 5vw, 72px);
   border-top: var(--rule) solid var(--border-subtle);
 }
 
@@ -772,7 +1179,7 @@ h1, h2, h3, h4, h5 {
   transition: background 0.2s ease;
 }
 
-.writing-row:hover { background: var(--accent-soft); }
+  .writing-row:hover:not(.hover-invert) { background: var(--accent-soft); }
 
 .writing-row__rail {
   display: flex;
@@ -788,7 +1195,7 @@ h1, h2, h3, h4, h5 {
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.writing-row:hover .writing-row__arrow {
+.writing-row:hover:not(.hover-invert) .writing-row__arrow {
   color: var(--accent-alt);
   transform: translateX(4px);
 }

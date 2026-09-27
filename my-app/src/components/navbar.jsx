@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { motion, useScroll, useSpring } from "motion/react";
 import { useTheme } from "../ThemeContext";
 
-const SECTIONS = ["home", "about", "projects", "writing", "contact"];
+const SECTIONS = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "projects", label: "Projects" },
+  { id: "writing", label: "Writing" },
+  { id: "contact", label: "Contact" },
+];
 
 const SunIcon = ({ size = 13 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -25,7 +32,6 @@ const MoonIcon = ({ size = 13 }) => (
 function NavBar() {
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { isDark, toggle } = useTheme();
@@ -35,24 +41,37 @@ function NavBar() {
   const isEducationPage = location.pathname.startsWith("/education");
   const isExternalPage = isArticlePage || isProjectPage || isEducationPage;
 
+  // Rail progress. Motion's scroll value writes straight to the transform,
+  // so the page never re-renders while scrolling.
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 30,
+    mass: 0.4,
+  });
+
   useEffect(() => {
     if (isArticlePage) { setActive("writing"); return; }
     if (isProjectPage) { setActive("projects"); return; }
     if (isEducationPage) { setActive("about"); return; }
 
-    const onScroll = () => {
-      setScrolled(window.scrollY > 8);
-      const nearBottom =
-        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
-      if (nearBottom) { setActive("contact"); return; }
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(SECTIONS[i]);
-        if (el && window.scrollY >= el.offsetTop - 140) { setActive(SECTIONS[i]); break; }
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const els = SECTIONS.map(({ id }) => document.getElementById(id)).filter(Boolean);
+    if (!els.length || typeof IntersectionObserver === "undefined") return;
+
+    // A thin band across the middle of the viewport decides the active
+    // section, which works for sections both shorter and taller than the screen.
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, [isArticlePage, isProjectPage, isEducationPage]);
 
   const scrollTo = (id) => {
@@ -61,223 +80,114 @@ function NavBar() {
       sessionStorage.setItem("scrollTarget", id);
       navigate("/");
     } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      const section = document.getElementById(id);
+      if (!section) return;
+      // Each section is its own scroll panel now, so reset it to the top
+      // when jumping in.
+      const panel = section.querySelector(".stage__panel");
+      if (panel) panel.scrollTop = 0;
+      section.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const navLinks = [
-    { label: "Home", id: "home" },
-    { label: "About", id: "about" },
-    { label: "Projects", id: "projects" },
-    { label: "Writing", id: "writing" },
-  ];
-
-  const barStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 9999,
-    background: "var(--nav-bg)",
-    backdropFilter: "blur(14px)",
-    WebkitBackdropFilter: "blur(14px)",
-    borderBottom: `1px solid ${scrolled ? "var(--nav-border)" : "transparent"}`,
-    transition: "border-color 0.25s ease, background 0.25s ease",
-  };
-
-  const markStyle = {
-    width: 22,
-    height: 22,
-    borderRadius: 2,
-    background: "var(--accent)",
-    display: "grid",
-    placeItems: "center",
-    fontFamily: "var(--font-mono)",
-    fontSize: 10,
-    fontWeight: 500,
-    color: "#11141f",
-    letterSpacing: 0,
-    flexShrink: 0,
-  };
-
-  const linkStyle = (id) => ({
-    position: "relative",
-    background: "transparent",
-    border: 0,
-    padding: "6px 2px",
-    fontSize: "0.9375rem",
-    fontWeight: 500,
-    letterSpacing: "-0.01em",
-    color: active === id ? "var(--text-primary)" : "var(--text-secondary)",
-    borderBottom: `1px solid ${active === id ? "var(--accent-alt)" : "transparent"}`,
-    transition: "color 0.18s ease, border-color 0.18s ease",
-  });
-
-  const iconButtonStyle = {
-    display: "grid",
-    placeItems: "center",
-    width: 34,
-    height: 34,
-    borderRadius: "var(--radius)",
-    border: "1px solid var(--border-subtle)",
-    background: "transparent",
-    color: "var(--text-secondary)",
-    transition: "color 0.18s ease, border-color 0.18s ease",
   };
 
   return (
     <>
-      {/* ── Desktop: slim hairline header ── */}
-      <nav style={barStyle} className="hidden md:block">
-        <div
-          className="shell"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: 64,
-            gap: 24,
-          }}
-        >
-          {/* Wordmark */}
-          <button
-            onClick={() => scrollTo("home")}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              background: "transparent",
-              border: 0,
-              padding: 0,
-            }}
-          >
-            <span style={markStyle}>JH</span>
-            <span
-              style={{
-                fontSize: "0.9375rem",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                color: "var(--text-primary)",
-              }}
-            >
-              Justin Huang
-            </span>
-          </button>
+      {/* ── Wordmark, top left (desktop) ── */}
+      <button
+        type="button"
+        className="wordmark"
+        onClick={() => scrollTo("home")}
+      >
+        <span className="wordmark__mark">JH</span>
+        <span className="wordmark__name">Justin Huang</span>
+      </button>
 
-          {/* Section links */}
-          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-            {navLinks.map(({ label, id }) => (
+      {/* ── Section rail, right edge (desktop) ── */}
+      <nav className="rail" aria-label="Section navigation">
+        <span className="rail__progress" aria-hidden="true">
+          <motion.span style={{ scaleY: progress }} />
+        </span>
+
+        {/* One constant surface behind the chrome, so the text colour can
+            stay fixed no matter which section is scrolling past behind it. */}
+        <div className="rail__panel">
+          <span className="rail__links">
+            {SECTIONS.map(({ id, label }) => (
               <button
                 key={id}
+                type="button"
+                className={`rail__link${active === id ? " is-active" : ""}`}
                 onClick={() => scrollTo(id)}
-                style={linkStyle(id)}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-primary)"; }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color =
-                    active === id ? "var(--text-primary)" : "var(--text-secondary)";
-                }}
+                aria-current={active === id ? "true" : undefined}
               >
-                {label}
+                <span className="rail__label">{label}</span>
+                <span className="rail__tick" aria-hidden="true" />
               </button>
             ))}
-          </div>
+          </span>
 
-          {/* Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <button
-              onClick={toggle}
-              style={iconButtonStyle}
-              aria-label="Toggle color theme"
-              onMouseEnter={(e) => { e.currentTarget.style.color = "var(--text-primary)"; e.currentTarget.style.borderColor = "var(--border-strong)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border-subtle)"; }}
-            >
-              {isDark ? <SunIcon /> : <MoonIcon />}
-            </button>
-            <button
-              onClick={() => scrollTo("contact")}
-              className="btn btn-primary btn-mono"
-              style={{ padding: "8px 14px" }}
-            >
-              Contact
-            </button>
-          </div>
+          <button
+            type="button"
+            className="rail__theme"
+            onClick={toggle}
+            aria-label="Toggle color theme"
+          >
+            {isDark ? <SunIcon /> : <MoonIcon />}
+          </button>
         </div>
       </nav>
 
-      {/* ── Mobile: compact header + drawer ── */}
-      <nav style={barStyle} className="md:hidden">
-        <div
-          className="shell"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: 58,
-          }}
-        >
-          <button
-            onClick={() => scrollTo("home")}
-            style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "transparent", border: 0, padding: 0 }}
-          >
-            <span style={{ ...markStyle, width: 20, height: 20, fontSize: 9 }}>JH</span>
-            <span style={{ fontSize: "0.9rem", fontWeight: 600, letterSpacing: "-0.02em" }}>
-              Justin Huang
-            </span>
+      {/* ── Compact bar + drawer (mobile and narrow screens) ── */}
+      <div className="mobilebar">
+        <div className="mobilebar__inner">
+          <button type="button" className="wordmark" onClick={() => scrollTo("home")}>
+            <span className="wordmark__mark" style={{ width: 20, height: 20, fontSize: 9 }}>JH</span>
+            <span className="wordmark__name" style={{ fontSize: "0.9rem" }}>Justin Huang</span>
           </button>
 
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button onClick={toggle} style={{ ...iconButtonStyle, width: 32, height: 32 }} aria-label="Toggle color theme">
+            <button
+              type="button"
+              className="rail__theme"
+              style={{ marginTop: 0, width: 32, height: 32 }}
+              onClick={toggle}
+              aria-label="Toggle color theme"
+            >
               {isDark ? <SunIcon size={12} /> : <MoonIcon size={12} />}
             </button>
+
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              style={{ ...iconButtonStyle, width: 32, height: 32 }}
+              type="button"
+              className="rail__theme"
+              style={{ marginTop: 0, width: 32, height: 32 }}
+              onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
               <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform 0.25s ease", transform: menuOpen ? "translateY(5px) rotate(45deg)" : "none" }} />
-                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", opacity: menuOpen ? 0 : 1, transition: "opacity 0.2s ease" }} />
-                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform 0.25s ease", transform: menuOpen ? "translateY(-5px) rotate(-45deg)" : "none" }} />
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform .25s ease", transform: menuOpen ? "translateY(5px) rotate(45deg)" : "none" }} />
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", opacity: menuOpen ? 0 : 1 }} />
+                <span style={{ display: "block", width: 14, height: 1, background: "currentColor", transition: "transform .25s ease", transform: menuOpen ? "translateY(-5px) rotate(-45deg)" : "none" }} />
               </span>
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <div style={{ borderTop: "1px solid var(--border-subtle)", background: "var(--nav-bg)" }}>
-            <div className="shell" style={{ paddingBlock: 8 }}>
-              {navLinks.map(({ label, id }) => (
-                <button
-                  key={id}
-                  onClick={() => scrollTo(id)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    background: "transparent",
-                    border: 0,
-                    borderBottom: "1px solid var(--border-subtle)",
-                    padding: "14px 0",
-                    fontSize: "1rem",
-                    fontWeight: 500,
-                    color: active === id ? "var(--accent-alt)" : "var(--text-primary)",
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
+          <div className="mobilebar__drawer">
+            {SECTIONS.map(({ id, label }) => (
               <button
-                onClick={() => scrollTo("contact")}
-                className="btn btn-primary btn-mono"
-                style={{ width: "100%", justifyContent: "center", marginTop: 14, marginBottom: 8 }}
+                key={id}
+                type="button"
+                className={`mobilebar__link${active === id ? " is-active" : ""}`}
+                onClick={() => scrollTo(id)}
               >
-                Contact
+                {label}
               </button>
-            </div>
+            ))}
           </div>
         )}
-      </nav>
+      </div>
     </>
   );
 }

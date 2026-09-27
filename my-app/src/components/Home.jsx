@@ -63,8 +63,10 @@ const Home = () => {
         position: "relative",
         overflow: "hidden",
         background: "var(--bg-primary)",
-        paddingTop: 140,
-        paddingBottom: "var(--section-y)",
+        paddingTop: 96,
+        /* The stat strip below supplies the bottom rhythm, so the hero does
+           not add a second full section of padding after it. */
+        paddingBottom: 0,
         transition: "background 0.25s ease",
       }}
     >
@@ -82,16 +84,32 @@ const Home = () => {
         />
       </div>
 
+      {/* ── Column guides + ghost letterform ── */}
+      <div aria-hidden="true">
+        <span className="grid-line-v" style={{ left: "33.33%" }} />
+        <span className="grid-line-v" style={{ left: "66.66%" }} />
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
+          <span className="ghost-type">JH</span>
+        </span>
+      </div>
+
       <div className="shell" style={{ position: "relative", zIndex: 1 }}>
         <div className="hero-grid">
           {/* ── Statement ── */}
           <div>
-            <p className="label">Portfolio — Los Angeles, CA</p>
-
             <BlurText
               tag="h1"
               className="display-xl"
-              style={{ marginTop: 26 }}
+              style={{ marginTop: 0 }}
               delay={55}
               startDelay={0.15}
               segments={[
@@ -106,9 +124,8 @@ const Home = () => {
             />
 
             <p className="lead" style={{ marginTop: 28, maxWidth: 560 }}>
-              A statistics graduate student at UCLA and a computer science graduate of
-              UC San Diego. I work on automation and machine learning, and I write
-              about the parts of the work that do not fit in a spreadsheet.
+              Statistics student at UCLA. I build automation and machine learning
+              tools, and I write about the work around them.
             </p>
 
             {/* Role ticker */}
@@ -146,31 +163,6 @@ const Home = () => {
               </button>
             </div>
 
-            {/* Stats — hairline divided, MLCommons data-row feel */}
-            <dl className="hero-stats">
-              {STATS.map(({ value, count, label }) => (
-                <div key={label}>
-                  <dt
-                    style={{
-                      fontSize: "1.6rem",
-                      fontWeight: 500,
-                      letterSpacing: "-0.03em",
-                      color: "var(--text-primary)",
-                    }}
-                  >
-                    {count ? (
-                      <>
-                        <CountUp to={count.to} duration={1.4} />
-                        {count.suffix}
-                      </>
-                    ) : (
-                      value
-                    )}
-                  </dt>
-                  <dd className="label" style={{ margin: "6px 0 0" }}>{label}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
           {/* ── Playable panel ── */}
@@ -210,6 +202,34 @@ const Home = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── Stat strip: directly below the hero, not inside it ── */}
+      <div className="shell" style={{ position: "relative", zIndex: 1 }}>
+        <dl className="hero-stats">
+          {STATS.map(({ value, count, label }) => (
+            <div key={label}>
+              <dt
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: 500,
+                  letterSpacing: "-0.03em",
+                  color: "var(--text-primary)",
+                }}
+              >
+                {count ? (
+                  <>
+                    <CountUp to={count.to} duration={1.4} />
+                    {count.suffix}
+                  </>
+                ) : (
+                  value
+                )}
+              </dt>
+              <dd className="meta" style={{ margin: "6px 0 0" }}>{label}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </div>
   );

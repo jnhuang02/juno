@@ -20,14 +20,14 @@ const skills = [
 
 const timeline = [
   {
-    year: "2024 — Present",
+    year: "2024 - Present",
     title: "MS Applied Statistics & Data Science",
     org: "UCLA",
     detail: "Focus on AI/ML · thesis on large language models",
     route: "/education/ucla",
   },
   {
-    year: "2020 — 2024",
+    year: "2020 - 2024",
     title: "BS Math-Computer Science",
     org: "UC San Diego",
     detail: "Minors in Data Science and Business-Economics",
@@ -45,8 +45,6 @@ const AboutMe = () => {
     >
       <div className="shell">
         <SectionHeader
-          index="01"
-          eyebrow="About"
           title="A builder's background"
           description="Statistics, software, and the long-running argument between the two. Here is where I studied, what I work with, and the sentence I keep coming back to."
         />
@@ -132,7 +130,7 @@ const AboutMe = () => {
                 className="label"
                 style={{ marginTop: 36, paddingTop: 16, borderTop: "1px solid var(--border-subtle)" }}
               >
-                Currently — building automation for analytics, writing about it, and
+                Currently: building automation for analytics, writing about it, and
                 making small games in the browser.
               </p>
             </div>

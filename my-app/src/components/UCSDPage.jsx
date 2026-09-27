@@ -140,11 +140,11 @@ export default function UCSDPage() {
           />
 
           <p className="lead muted" style={{ marginTop: 24, maxWidth: 620 }}>
-            Minors in Data Science and Business-Economics — where algorithms,
+            Minors in Data Science and Business-Economics, where algorithms,
             probability, and economics first started to fit together.
           </p>
 
-          <p className="meta" style={{ marginTop: 18 }}>2020 — 2024 · La Jolla, California</p>
+          <p className="meta" style={{ marginTop: 18 }}>2020 - 2024, La Jolla, California</p>
 
           <dl className="edu-stats">
             {STATS.map(({ label, count, from, suffix, duration, value }) => (

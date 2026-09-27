@@ -167,46 +167,13 @@ export default function RocketGame() {
   return (
     <div className="flex flex-col items-center justify-center py-8">
       {/* Title */}
-      <div className="text-center mb-4">
-        <h1 className="text-3xl md:text-4xl font-black mb-1" style={{ color: textPrimary }}>
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <h1 style={{ color: textPrimary, fontFamily: "monospace", fontSize: 22, fontWeight: 900, margin: "0 0 4px", letterSpacing: 1 }}>
           Bust Down the AP 💎
         </h1>
-        <p className="text-sm" style={{ color: textSecondary }}>
+        <p style={{ color: textSecondary, fontFamily: "monospace", fontSize: 12, margin: 0 }}>
           Click on the falling diamonds to ice out the Royal Oak
         </p>
-      </div>
-
-      {/* HUD */}
-      <div className="flex gap-8 mb-3 z-10">
-        <div className="text-center">
-          <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Diamonds</div>
-          <div className="font-black text-xl" style={{ color: textPrimary }}>
-            {caught}<span className="text-sm font-normal" style={{ color: textMuted }}> / {TOTAL}</span>
-          </div>
-        </div>
-        {phase === "playing" && (
-          <div className="text-center">
-            <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Time</div>
-            <div className={`font-black text-xl ${time <= 10 ? "text-red-400" : ""}`} style={time <= 10 ? {} : { color: textPrimary }}>
-              {time}s
-            </div>
-          </div>
-        )}
-        <div className="text-center">
-          <div className="text-[10px] uppercase tracking-widest" style={{ color: textMuted }}>Status</div>
-          <div className="font-bold text-sm" style={{ color: stage.color }}>{stage.label}</div>
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      <div className="h-2 bg-gray-800 rounded-full mb-5 overflow-hidden" style={{ width: 460 }}>
-        <div
-          className="h-full rounded-full transition-all duration-300"
-          style={{
-            width: `${progress * 100}%`,
-            background: "linear-gradient(90deg,#38bdf8,#6366f1,#fbbf24)",
-          }}
-        />
       </div>
 
       {/* Game area */}
@@ -214,16 +181,41 @@ export default function RocketGame() {
         ref={gameArea}
         className="relative rounded-2xl overflow-hidden"
         style={{
-          width: 460, height: 460,
+          width: 460, height: 340,
           background: "transparent",
         }}
       >
+        {/* HUD, laid over the play area the way the canvas games draw theirs */}
+        <div
+          className="absolute z-10"
+          style={{
+            top: 12, left: 16, right: 16,
+            display: "flex", gap: 18, alignItems: "baseline",
+            pointerEvents: "none",
+            fontFamily: "monospace", fontSize: 10,
+            letterSpacing: 1, textTransform: "uppercase",
+            color: textMuted,
+          }}
+        >
+          <span>
+            Diamonds{" "}
+            <b style={{ color: textPrimary, fontWeight: 800 }}>{caught}/{TOTAL}</b>
+          </span>
+          {phase === "playing" && (
+            <span>
+              Time{" "}
+              <b style={{ color: time <= 10 ? "#f87171" : textPrimary, fontWeight: 800 }}>{time}s</b>
+            </span>
+          )}
+          <span style={{ marginLeft: "auto", color: stage.color }}>{stage.label}</span>
+        </div>
+
         {/* Watch */}
         <div
           className="absolute left-1/2 top-1/2"
           style={{
             transform: "translate(-50%,-50%)",
-            width: 210, height: 210,
+            width: 155, height: 155,
             animation: glowAnim,
           }}
         >
@@ -403,12 +395,36 @@ export default function RocketGame() {
             )}
           </div>
         )}
-      </div>
 
-      {/* Status message */}
-      {phase === "playing" && (
-        <p className="text-sm mt-4 italic" style={{ color: textMuted }}>{stage.msg}</p>
-      )}
+        {/* Progress, pinned to the bottom edge of the play area */}
+        <div
+          className="absolute z-10"
+          style={{ left: 0, right: 0, bottom: 0, height: 4, background: "rgba(148,163,184,0.18)" }}
+        >
+          <div
+            style={{
+              width: `${progress * 100}%`,
+              height: "100%",
+              background: "linear-gradient(90deg,#38bdf8,#6366f1,#fbbf24)",
+              transition: "width 0.3s",
+            }}
+          />
+        </div>
+
+        {/* Stage hint */}
+        {phase === "playing" && (
+          <p
+            className="absolute z-10"
+            style={{
+              left: 16, bottom: 12, margin: 0,
+              fontFamily: "monospace", fontSize: 11, fontStyle: "italic",
+              color: textMuted,
+            }}
+          >
+            {stage.msg}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

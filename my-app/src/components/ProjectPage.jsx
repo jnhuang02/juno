@@ -141,7 +141,7 @@ const ProjectPage = () => {
           <p className="label">404</p>
           <h1 className="display-lg" style={{ marginTop: 18 }}>Project not found</h1>
           <p className="lead" style={{ marginTop: 16 }}>
-            That case study does not exist — it may have been renamed.
+            That case study does not exist. It may have been renamed.
           </p>
           <button onClick={goBack} className="btn btn-outline btn-mono" style={{ marginTop: 28 }}>
             Back to portfolio

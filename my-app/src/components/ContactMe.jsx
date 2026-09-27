@@ -32,7 +32,7 @@ const ContactMe = () => (
   <div className="band-ink section">
     <div className="shell">
       <FadeIn>
-        <p className="label">04 / Contact</p>
+        <p className="label">Contact</p>
         <h2
           className="display-lg"
           style={{ marginTop: 22, maxWidth: 760 }}
@@ -115,7 +115,7 @@ const ContactMe = () => (
           © {new Date().getFullYear()} Justin Huang
         </p>
         <p className="label" style={{ margin: 0 }}>
-          Los Angeles, CA — Built with React &amp; Tailwind
+          Los Angeles, CA. Built with React &amp; Tailwind
         </p>
       </div>
     </div>
