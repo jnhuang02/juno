@@ -29,8 +29,11 @@ const MoonIcon = ({ size = 13 }) => (
   </svg>
 );
 
-function NavBar() {
-  const [active, setActive] = useState("home");
+function NavBar({ activeSection, onNavigate }) {
+  const [tracked, setTracked] = useState("home");
+  // The home page is a deck and tells us which scene is showing; elsewhere
+  // the nav works it out from what is on screen.
+  const active = activeSection ?? tracked;
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,9 +54,10 @@ function NavBar() {
   });
 
   useEffect(() => {
-    if (isArticlePage) { setActive("writing"); return; }
-    if (isProjectPage) { setActive("projects"); return; }
-    if (isEducationPage) { setActive("about"); return; }
+    if (activeSection) return;
+    if (isArticlePage) { setTracked("writing"); return; }
+    if (isProjectPage) { setTracked("projects"); return; }
+    if (isEducationPage) { setTracked("about"); return; }
 
     const els = SECTIONS.map(({ id }) => document.getElementById(id)).filter(Boolean);
     if (!els.length || typeof IntersectionObserver === "undefined") return;
@@ -65,14 +69,14 @@ function NavBar() {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActive(visible[0].target.id);
+        if (visible[0]) setTracked(visible[0].target.id);
       },
       { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
     );
 
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, [isArticlePage, isProjectPage, isEducationPage]);
+  }, [activeSection, isArticlePage, isProjectPage, isEducationPage]);
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -80,13 +84,19 @@ function NavBar() {
       sessionStorage.setItem("scrollTarget", id);
       navigate("/");
     } else {
-      const section = document.getElementById(id);
-      if (!section) return;
-      // Each section is its own scroll panel now, so reset it to the top
-      // when jumping in.
-      const panel = section.querySelector(".stage__panel");
+      // On the home deck the page owns the jump, so it can move straight to
+      // the target without the scenes in between coming up on the way past.
+      if (onNavigate) {
+        onNavigate(id);
+        return;
+      }
+
+      // The sections are fixed in place, so the thing with a scroll position
+      // is the slot behind them.
+      const slot = document.getElementById(`${id}-slot`) || document.getElementById(id);
+      const panel = document.getElementById(id)?.querySelector(".stage__panel");
       if (panel) panel.scrollTop = 0;
-      section.scrollIntoView({ behavior: "smooth" });
+      slot?.scrollIntoView({ behavior: "smooth" });
     }
   };
 

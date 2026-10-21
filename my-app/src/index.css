@@ -681,12 +681,34 @@ h1, h2, h3, h4, h5 {
    scroll only ever moves between sections.
    ============================================================ */
 
-.stage {
+/* Scroll length. One invisible slot per scene: the page still scrolls, but
+   nothing on screen moves with it. */
+.deck {
   position: relative;
+}
+
+.deck__slot {
   height: 100svh;
-  overflow: hidden;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+/* The scenes themselves, stacked over the same viewport. */
+.deck__view {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.88);
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .stage__panel {
@@ -711,31 +733,45 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-/* ── Rack-focus transition ──
-   A section defocuses, dims and shrinks as it loses the viewport, and
-   resolves back to sharp as it takes it over. The resting state is the
-   plain visible one: `is-off` is only ever added by the observer, so if
-   the observer never runs every section simply renders normally. */
-.stage {
-  transition: opacity 0.55s ease, filter 0.6s ease,
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+/* The home page is a deck, so the section panels and the page itself both
+   have their scrollbars hidden: position is carried by the rail's progress
+   line instead. Long-form pages keep theirs, since there the scrollbar is
+   the only sense of how much is left to read. */
+html.snap-on,
+html.snap-on body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.stage.is-off {
-  /* Deliberately not opacity 0. At rest the inactive sections are off-screen
-     anyway, so the floor never shows during normal use - but it means a
-     section can never be rendered completely blank. */
-  opacity: 0.22;
-  filter: blur(13px) saturate(0.6);
-  transform: scale(0.96);
+html.snap-on::-webkit-scrollbar,
+html.snap-on body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Scene change: a camera move ──
+   Scenes are not translated, they are scaled, and where each one rests
+   depends on which side of the current scene it sits on:
+
+     below  -> held small   (0.88), so arriving from below grows into view
+     above  -> held large   (1.08), so returning upward shrinks back into view
+     active -> 1:1
+
+   So scrolling down pushes the camera in and scrolling up pulls it back out,
+   with no direction state to track: the class alone carries it. */
+.stage.is-below { transform: scale(0.88); }
+.stage.is-above { transform: scale(1.08); }
+
+.stage.is-active {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  z-index: 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stage,
-  .stage.is-off {
-    opacity: 1;
-    filter: none;
-    transform: none;
+  /* Scenes still swap, they just swap instantly. Note the inactive scenes
+     keep their hidden state: forcing opacity here would stack all of them. */
+  .stage {
     transition: none;
   }
 }
@@ -743,6 +779,33 @@ h1, h2, h3, h4, h5 {
 @media (prefers-reduced-motion: reduce) {
   html.snap-on,
   html.snap-on body { scroll-snap-type: none; }
+}
+
+/* ── Route change curtain ──
+   Rises to cover the page swap, then continues upward to reveal the new page,
+   leaving its red leading edge behind as the reveal line. Fixed to the
+   viewport and outside the routed tree, so it can't disturb page layout. */
+.route-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  background: var(--bg-primary);
+  border-bottom: 2px solid var(--nav-accent);
+  transform: translateY(100%);
+  will-change: transform;
+  animation: route-wipe 0.68s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes route-wipe {
+  0% { transform: translateY(100%); }
+  42% { transform: translateY(0); }
+  56% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-wipe { display: none; }
 }
 
 /* Vertical column guides — 1px rules that reveal the grid the

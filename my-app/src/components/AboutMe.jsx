@@ -50,9 +50,9 @@ const AboutMe = () => {
         />
 
         {/* ── Portrait + bio ── */}
-        <FadeIn delay={80}>
-          <div className="about-grid" style={{ marginTop: "clamp(48px, 6vw, 80px)" }}>
+        <div className="about-grid" style={{ marginTop: "clamp(48px, 6vw, 80px)" }}>
             {/* Rail */}
+            <FadeIn delay={60} direction="left">
             <div>
               <img
                 src={pfp}
@@ -93,7 +93,10 @@ const AboutMe = () => {
               </dl>
             </div>
 
+            </FadeIn>
+
             {/* Bio */}
+            <FadeIn delay={200}>
             <div style={{ maxWidth: 620 }}>
               <p
                 className="serif"
@@ -134,8 +137,8 @@ const AboutMe = () => {
                 making small games in the browser.
               </p>
             </div>
-          </div>
-        </FadeIn>
+            </FadeIn>
+        </div>
 
         {/* ── Education ── */}
         <div style={{ marginTop: "clamp(64px, 8vw, 110px)" }}>

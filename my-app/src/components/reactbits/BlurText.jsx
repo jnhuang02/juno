@@ -8,7 +8,10 @@
  *    phrase inside a sans headline) while the words still flow and wrap as
  *    one block of text.
  *  - `tag`, `style` and `startDelay` props.
- *  - Softer travel/blur defaults to suit the editorial layout.
+ *  - The blur is gone. Upstream resolves each word out of a blur, which on
+ *    large display type reads as everything swimming into focus. Words now
+ *    rise and settle instead, so the stagger is still there but nothing is
+ *    ever out of focus. Kept the upstream filename for traceability.
  *  - Honours prefers-reduced-motion by rendering the text statically.
  */
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
@@ -88,9 +91,8 @@ const BlurText = ({
   const from = useMemo(
     () =>
       animationFrom ?? {
-        filter: "blur(8px)",
         opacity: 0,
-        y: direction === "top" ? 22 : -22,
+        y: direction === "top" ? 30 : -30,
       },
     [animationFrom, direction]
   );
@@ -98,8 +100,8 @@ const BlurText = ({
   const to = useMemo(
     () =>
       animationTo ?? [
-        { filter: "blur(4px)", opacity: 0.5, y: direction === "top" ? 4 : -4 },
-        { filter: "blur(0px)", opacity: 1, y: 0 },
+        { opacity: 0.45, y: direction === "top" ? 6 : -6 },
+        { opacity: 1, y: 0 },
       ],
     [animationTo, direction]
   );
@@ -137,7 +139,7 @@ const BlurText = ({
         <Fragment key={`${token.part}-${index}`}>
           <motion.span
             className={token.className}
-            style={{ display: "inline-block", willChange: "transform, filter, opacity", ...token.style }}
+            style={{ display: "inline-block", willChange: "transform, opacity", ...token.style }}
             initial={from}
             animate={inView ? keyframes : from}
             transition={{
